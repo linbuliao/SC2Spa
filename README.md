@@ -3,7 +3,7 @@
 SC2Spa: a deep learning based approach to map transcriptome to spatial origins at cellular resolution
 ====================================================================================
 
-<img src="./SC2Spa.png" alt="SC2Spa Overview" width="200"/>
+<img src="./SC2Spa.png" alt="SC2Spa Overview" width="600"/>
 
 ## Install
 Install SC2Spa via PyPI by running:
