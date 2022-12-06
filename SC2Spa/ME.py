@@ -5,6 +5,7 @@ import math
 from scipy.stats import binom
 from multiprocessing import Pool
 
+from scipy.stats import bootstrap
 
 def Count_Prob_EEI(A):
     '''
@@ -46,7 +47,7 @@ def Count_Prob_EEI(A):
     return Count_excl, Prob_excl
 
 
-def BME_sub(ij:list, Count_excl:np.array, Prob_excl:np.array, A_S:np.array,
+def DEEI_sub(ij:list, Count_excl:np.array, Prob_excl:np.array, A_S:np.array,
             A_E:np.array, genes:list, n_cell:int, p_coef:int):
     '''
     Calculate Balanced Mutual exclusivity and Directed exclusively express index (subprocess)
@@ -127,7 +128,7 @@ def BME_sub(ij:list, Count_excl:np.array, Prob_excl:np.array, A_S:np.array,
     return DEEI
 
 
-def BME(A, cutoff=0.05, p_coef=1, n_process=16):
+def calc_DEEI(A, cutoff=0.05, p_coef=1, n_process=16):
     '''
     Calculate Balanced Mutual Exclusivity and Directed exclusively express index
 
@@ -137,8 +138,8 @@ def BME(A, cutoff=0.05, p_coef=1, n_process=16):
         Gene expression matrix (n_cell x n_gene)
     cutoff
         gene expression cutoff that determines if a gene is expressed
-    DEEI
-        Mutual exclusivity statistics for given gene pairs ij
+    p_coef
+        penalty factor for the BME statistic
     n_process
         number of cores to be used
 
@@ -167,9 +168,126 @@ def BME(A, cutoff=0.05, p_coef=1, n_process=16):
     ijs.append(ij[(n_process - 1) * step:])
 
     with Pool(n_process) as p:
-        DEEI = p.starmap(BME_sub, [(ij, Count_excl, Prob_excl,
+        DEEI = p.starmap(DEEI_sub, [(ij, Count_excl, Prob_excl,
                                     A_S, A_E, genes, n_cell, p_coef) for ij in ijs])
 
     DEEI = pd.concat(DEEI).sort_values('BME', ascending=False).reset_index(drop=True)
 
     return DEEI
+
+
+def BME_stat(A1, A2, p_coef=1):
+    '''
+    Calculate Balanced Mutual exclusivity score between Gene 1 and Gene 2
+
+    Parameters
+    ---------
+    A1
+        Expression vector of gene 1
+    A2
+        Expression vector of gene 2
+
+    Returns
+    -------
+    e
+        Balanced Mutual exclusivity score between Gene 1 and Gene 2
+    '''
+
+    e1 = ((A1 < 0.05) & (A2 > 0.05)).sum()
+    e2 = ((A2 < 0.05) & (A1 > 0.05)).sum()
+
+    n_cell = len(A1)
+
+    e12sumsqr = e1 ** 2 + e2 ** 2
+    e1e2 = e1 * e2
+    penalty = (e12sumsqr + 2 * e1e2) / e12sumsqr / 2
+    e = (e1 + e2) / n_cell * (penalty ** p_coef)
+
+    return e
+
+
+def calc_BME_sub(ij: list, A: np.array, genes: list, n_resamples: int):
+    '''
+    Calculate Balanced Mutual exclusivity (subprocess)
+
+    Parameters
+    ---------
+    ij
+        indices of gene pairs
+    A
+        gene expression matrix. Shape is (cell, gene).
+    genes
+        A list of genes. The order of genes matches with A.
+    n_resamples
+        The number of resamples performed to form the bootstrap distribution of the statistic
+
+    Returns
+    -------
+    BME_score
+        Mutual exclusivity statistics for given gene pairs ij
+    '''
+
+    BME_score = pd.DataFrame(np.zeros((len(ij), 7), dtype=np.float64),
+                             columns=['Gene1', 'Gene2', 'BME', 'CI_lower',
+                                      'CI_upper', 'SE', 'p_value'])
+    rng = np.random.default_rng()
+
+    for count, ijt in enumerate(ij):
+        i, j = ijt
+
+        # BME
+        e = BME_stat(A.iloc[:, i], A.iloc[:, j])
+
+        BME_score.loc[count, 'Gene1'] = genes[i]
+        BME_score.loc[count, 'Gene2'] = genes[j]
+        BME_score.loc[count, 'BME'] = e
+
+        CI_BME = bootstrap((A.iloc[:, i], A.iloc[:, j]), BME_stat, n_resamples=n_resamples,
+                           vectorized=False, paired=True, method='percentile', random_state=rng)
+        BME_score.loc[count, 'CI_lower'] = CI_BME.confidence_interval.low
+        BME_score.loc[count, 'CI_upper'] = CI_BME.confidence_interval.high
+        BME_score.loc[count, 'SE'] = CI_BME.standard_error
+        z = e / BME_score.loc[count, 'SE']
+        p_value = np.exp(-0.717 * z - 0.416 * (z ** 2))
+        BME_score.loc[count, 'p_value'] = p_value
+
+    return BME_score
+
+
+def calc_BME(A, n_process=16, n_resamples=200):
+    '''
+    Calculate Balanced Mutual Exclusivity
+
+    Parameters
+    ---------
+    A
+        Gene expression matrix (n_cell x n_gene)
+    n_process
+        number of cores to be used
+    n_resamples
+        The number of resamples performed to form the bootstrap distribution of the statistic
+
+    Returns
+    -------
+    BME
+        BME statistics
+    '''
+
+    genes = A.columns.tolist()
+    n_gene = A.shape[1]
+
+    ij = []
+    for i in range(0, n_gene):
+        for j in range(i + 1, n_gene):
+            ij.append([i, j])
+
+    step = int(len(ij) / n_process)
+    ijs = [ij[i * step:(i + 1) * step] for i in range(n_process - 1)]
+    ijs.append(ij[(n_process - 1) * step:])
+
+    with Pool(n_process) as p:
+        BME = p.starmap(calc_BME_sub, [(ij, A, genes, n_resamples) for ij in ijs])
+
+    BME = pd.concat(BME).sort_values('BME', ascending=False).reset_index(drop=True)
+
+    return BME
