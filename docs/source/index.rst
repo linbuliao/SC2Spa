@@ -5,8 +5,10 @@ SC2Spa: Map transcriptome to space at cellular resolution
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: General
+   :hidden:
 
+   installation
 
 
 Indices and tables
