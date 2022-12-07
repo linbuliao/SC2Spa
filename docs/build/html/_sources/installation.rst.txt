@@ -1,3 +1,5 @@
+.. _installation:
+
 Installation
 ============
 SC2Spa requires Python version >= 3.8 to run.

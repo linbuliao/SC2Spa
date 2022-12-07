@@ -14,16 +14,9 @@ SC2Spa: Map transcriptome to space at cellular resolution
    :maxdepth: 2
    :caption: General
    :hidden:
-
+   
    installation
 
-
-Indices and tables
--------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/sc2spa.svg
