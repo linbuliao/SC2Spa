@@ -3,6 +3,13 @@
 SC2Spa: Map transcriptome to space at cellular resolution
 ==========================================================
 
+
+.. image:: https://raw.githubusercontent.com/linbuliao/SC2Spa/main/SC2Spa.png
+    :alt: SC2Spa title figure
+    :width: 500px
+    :align: center
+    :target: https://github.com/linbuliao/SC2Spa
+
 .. toctree::
    :maxdepth: 2
    :caption: General
