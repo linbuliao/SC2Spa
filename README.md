@@ -14,7 +14,9 @@ Install SC2Spa via PyPI by running:
 pip install SC2Spa
 ```
 
-## Analysis
+## Analysis for the SC2Spa manuscript
 The analysis for the SC2Spa manuscript can be found [here](https://github.com/linbuliao/SC2Spa_Notebooks)
+
+
 
 __Document is to be updated. Many more to come!__
