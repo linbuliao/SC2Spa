@@ -18,5 +18,5 @@ pip install SC2Spa
 The analysis for the SC2Spa manuscript can be found [here](https://github.com/linbuliao/SC2Spa_Notebooks)
 
 
-
 ## Many more to come!
+We will update more on our [Read the Docs page](https://sc2spa.readthedocs.io/en/latest/)
