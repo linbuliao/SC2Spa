@@ -19,4 +19,4 @@ The analysis for the SC2Spa manuscript can be found [here](https://github.com/li
 
 
 
-__Document is to be updated. Many more to come!__
+## Many more to come!
