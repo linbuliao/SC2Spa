@@ -1,0 +1,371 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "e3d160fa",
+   "metadata": {},
+   "source": [
+    "# Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "f628da43",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "from time import time\n",
+    "\n",
+    "import anndata as ad\n",
+    "import scanpy as sc\n",
+    "from SC2Spa import SI\n",
+    "\n",
+    "import pandas as pd\n",
+    "\n",
+    "from numpy.random import seed\n",
+    "from tensorflow.random import set_seed\n",
+    "import tensorflow as tf"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2384f669",
+   "metadata": {},
+   "source": [
+    "## Download datasets"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "4d1f269e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--2023-01-08 18:35:56--  https://figshare.com/ndownloader/files/38736651\n",
+      "Resolving figshare.com (figshare.com)... 63.35.35.68, 63.32.177.41, 2a05:d018:1f4:d003:a6c:2d91:83f8:9cfb, ...\n",
+      "Connecting to figshare.com (figshare.com)|63.35.35.68|:443... connected.\n",
+      "HTTP request sent, awaiting response... 302 Found\n",
+      "Location: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38736651/AdataMH1.h5ad?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173557Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=cb594a3e00979ef0d36ad2db45bf5caeaa843eac9351c468b3a769f3dda98b85 [following]\n",
+      "--2023-01-08 18:35:57--  https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38736651/AdataMH1.h5ad?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173557Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=cb594a3e00979ef0d36ad2db45bf5caeaa843eac9351c468b3a769f3dda98b85\n",
+      "Resolving s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)... 52.218.1.99, 52.218.110.43, 52.92.33.32, ...\n",
+      "Connecting to s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)|52.218.1.99|:443... connected.\n",
+      "HTTP request sent, awaiting response... 200 OK\n",
+      "Length: 73481745 (70M) [application/octet-stream]\n",
+      "Saving to: ‘Dataset/AdataMH1.h5ad’\n",
+      "\n",
+      "Dataset/AdataMH1.h5 100%[===================>]  70.08M  11.3MB/s    in 6.3s    \n",
+      "\n",
+      "2023-01-08 18:36:03 (11.1 MB/s) - ‘Dataset/AdataMH1.h5ad’ saved [73481745/73481745]\n",
+      "\n",
+      "--2023-01-08 18:36:03--  https://figshare.com/ndownloader/files/38738136\n",
+      "Resolving figshare.com (figshare.com)... 63.32.177.41, 63.35.35.68, 2a05:d018:1f4:d000:bec2:d3b8:812e:6b90, ...\n",
+      "Connecting to figshare.com (figshare.com)|63.32.177.41|:443... connected.\n",
+      "HTTP request sent, awaiting response... 302 Found\n",
+      "Location: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38738136/AMB_HC.h5ad?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173603Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=3d4d36ca6981851ea31cd65f002b583e4779105798742f4e77639e5578b5e396 [following]\n",
+      "--2023-01-08 18:36:03--  https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38738136/AMB_HC.h5ad?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173603Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=3d4d36ca6981851ea31cd65f002b583e4779105798742f4e77639e5578b5e396\n",
+      "Resolving s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)... 52.218.36.10, 52.218.24.26, 52.218.65.28, ...\n",
+      "Connecting to s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)|52.218.36.10|:443... connected.\n",
+      "HTTP request sent, awaiting response... 200 OK\n",
+      "Length: 334743216 (319M) [application/octet-stream]\n",
+      "Saving to: ‘Dataset/AMB_HC.h5ad’\n",
+      "\n",
+      "Dataset/AMB_HC.h5ad 100%[===================>] 319.24M  11.3MB/s    in 28s     \n",
+      "\n",
+      "2023-01-08 18:36:32 (11.2 MB/s) - ‘Dataset/AMB_HC.h5ad’ saved [334743216/334743216]\n",
+      "\n",
+      "--2023-01-08 18:36:32--  https://figshare.com/ndownloader/files/38756529\n",
+      "Resolving figshare.com (figshare.com)... 63.32.177.41, 63.35.35.68, 2a05:d018:1f4:d000:bec2:d3b8:812e:6b90, ...\n",
+      "Connecting to figshare.com (figshare.com)|63.32.177.41|:443... connected.\n",
+      "HTTP request sent, awaiting response... 302 Found\n",
+      "Location: https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38756529/ssHippo_RCTD.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173632Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=a54cd2b86da6e1acc7ac09cef8edd9b68e368fb8c5b11577437d6e07adfd852b [following]\n",
+      "--2023-01-08 18:36:32--  https://s3-eu-west-1.amazonaws.com/pfigshare-u-files/38756529/ssHippo_RCTD.csv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIYCQYOYV5JSSROOA/20230108/eu-west-1/s3/aws4_request&X-Amz-Date=20230108T173632Z&X-Amz-Expires=10&X-Amz-SignedHeaders=host&X-Amz-Signature=a54cd2b86da6e1acc7ac09cef8edd9b68e368fb8c5b11577437d6e07adfd852b\n",
+      "Resolving s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)... 52.218.117.176, 52.218.98.123, 52.218.93.11, ...\n",
+      "Connecting to s3-eu-west-1.amazonaws.com (s3-eu-west-1.amazonaws.com)|52.218.117.176|:443... connected.\n",
+      "HTTP request sent, awaiting response... 200 OK\n",
+      "Length: 1357460 (1.3M) [text/csv]\n",
+      "Saving to: ‘Dataset/ssHippo_RCTD.csv’\n",
+      "\n",
+      "Dataset/ssHippo_RCT 100%[===================>]   1.29M  6.22MB/s    in 0.2s    \n",
+      "\n",
+      "2023-01-08 18:36:33 (6.22 MB/s) - ‘Dataset/ssHippo_RCTD.csv’ saved [1357460/1357460]\n",
+      "\n",
+      "/mnt/win1/SC2Spa_Notebook/tutorial1\n"
+     ]
+    }
+   ],
+   "source": [
+    "if not os.path.exists('Dataset'):\n",
+    "    os.makedirs('Dataset')\n",
+    "!wget https://figshare.com/ndownloader/files/38736651 -O Dataset/AdataMH1.h5ad\n",
+    "!wget https://figshare.com/ndownloader/files/38738136 -O Dataset/AMB_HC.h5ad\n",
+    "!wget https://figshare.com/ndownloader/files/38756529 -O Dataset/ssHippo_RCTD.csv\n",
+    "\n",
+    "if not os.path.exists('tutorial1'):\n",
+    "    os.makedirs('tutorial1')\n",
+    "%cd tutorial1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e5937ca8",
+   "metadata": {},
+   "source": [
+    "## Load datasets"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "c37af7e0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "Variable names are not unique. To make them unique, call `.var_names_make_unique`.\n",
+      "/tmp/ipykernel_56444/677049553.py:30: FutureWarning: The default value of regex will change from True to False in a future version. In addition, single character regular expressions will *not* be treated as literal strings when regex=True.\n",
+      "  adata_query.obs['common_name'] = adata_query.obs['common_name'].str.replace('?', '')\n"
+     ]
+    }
+   ],
+   "source": [
+    "#Load\n",
+    "adata_ref = ad.read_h5ad('../Dataset/AdataMH1.h5ad')\n",
+    "adata_query = ad.read_h5ad('../Dataset/AMB_HC.h5ad')\n",
+    "\n",
+    "adata_ref.var_names = adata_ref.var_names.str.upper()\n",
+    "adata_query.var_names = adata_query.var_names.str.upper()\n",
+    "\n",
+    "adata_ref.var_names_make_unique()\n",
+    "adata_query.var_names_make_unique()\n",
+    "\n",
+    "#Normalize\n",
+    "sc.pp.normalize_total(adata_ref, target_sum=1e4)\n",
+    "sc.pp.log1p(adata_ref)\n",
+    "sc.pp.normalize_total(adata_query, target_sum=1e4)\n",
+    "sc.pp.log1p(adata_query)\n",
+    "\n",
+    "#Load annotation\n",
+    "Anno = pd.read_csv('../Dataset/ssHippo_RCTD.csv', index_col = 0)\n",
+    "Anno['MCT'] = 't'\n",
+    "index1 = Anno.index[(Anno['celltype_1'] == Anno['celltype_2'])]\n",
+    "Anno['MCT'][index1] = Anno['celltype_1'][index1]\n",
+    "index2 = Anno.index[(Anno['celltype_1'] != Anno['celltype_2'])]\n",
+    "Anno['MCT'][index2] = (Anno['celltype_1'][index2] + '_' + Anno['celltype_2'][index2]).apply(lambda x: '_'.join(sorted(set(x.split('_')))))\n",
+    "adata_ref.obs = adata_ref.obs.merge(Anno, left_index = True, right_index = True, how = 'left')\n",
+    "\n",
+    "adata_ref.obsm['spatial'] = adata_ref.obs[['xcoord', 'ycoord']].values\n",
+    "\n",
+    "\n",
+    "\n",
+    "adata_query.obs['common_name'] = adata_query.obs['common_name'].str.replace('?', '')\n",
+    "adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.',\n",
+    "                        expand = True)[0].str.split(',', expand = True)[0].str.split(' \\(',\n",
+    "                                    expand = True)[0].str.replace('cortexm', 'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8fa74a3b",
+   "metadata": {},
+   "source": [
+    "## Select genes using Wasserstein distance (Optional)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "600db87f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sta = time()\n",
+    "JGs, WDs = SI.WassersteinD(adata_ref, adata_query, sparse = True,\n",
+    "                           WD_cutoff = 0.1, root = 'WDs/', save = 'WDs_T2')\n",
+    "\n",
+    "end = time()\n",
+    "print((end - sta) / 60.0, 'min')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03a7abad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "WD_cutoff = 0.4\n",
+    "\n",
+    "root = 'WDs/'\n",
+    "save = 'WDs_T2'\n",
+    "\n",
+    "WDs = pd.read_csv(root + save + '.csv')\n",
+    "JGs = sorted(WDs[WDs['Wasserstein_Distance'] < WD_cutoff]['Gene'].tolist())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "de4ccb17",
+   "metadata": {},
+   "source": [
+    "## Fine Mapping"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "d0c1fb93",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "n of Referece Genes: 20527\n",
+      "n of Target Genes: 24509\n",
+      "n of Selected Genes: 19986\n",
+      "(35349, 19986)\n",
+      "(127165, 19986)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2023-01-08 18:50:00.512863: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA\n",
+      "To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.\n",
+      "2023-01-08 18:50:01.267225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22406 MB memory:  -> device: 0, name: NVIDIA TITAN RTX, pci bus id: 0000:3b:00.0, compute capability: 7.5\n",
+      "/home/linbuliao/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py:255: UserWarning: `Model.fit_generator` is deprecated and will be removed in a future version. Please use `Model.fit`, which supports generators.\n",
+      "  model.fit_generator(generator = batch_generator(X,\\\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Epoch 1/500\n",
+      "8/8 [==============================] - 9s 609ms/step - loss: 6.3297 - rmse: 0.2090 - lr: 0.0010\n",
+      "Epoch 2/500\n",
+      "8/8 [==============================] - 5s 543ms/step - loss: 4.5018 - rmse: 0.1535 - lr: 0.0010\n",
+      "Epoch 3/500\n",
+      "8/8 [==============================] - 5s 531ms/step - loss: 3.2364 - rmse: 0.1370 - lr: 0.0010\n",
+      "Epoch 4/500\n",
+      "8/8 [==============================] - 5s 533ms/step - loss: 2.3469 - rmse: 0.1262 - lr: 0.0010\n",
+      "Epoch 5/500\n",
+      "8/8 [==============================] - 5s 541ms/step - loss: 1.7205 - rmse: 0.1196 - lr: 0.0010\n",
+      "Epoch 6/500\n",
+      "8/8 [==============================] - 5s 551ms/step - loss: 1.3157 - rmse: 0.1159 - lr: 0.0010\n",
+      "Epoch 7/500\n",
+      "8/8 [==============================] - 5s 584ms/step - loss: 1.0709 - rmse: 0.1159 - lr: 0.0010\n",
+      "Epoch 8/500\n",
+      "8/8 [==============================] - 5s 600ms/step - loss: 0.9136 - rmse: 0.1138 - lr: 0.0010\n",
+      "Epoch 9/500\n",
+      "8/8 [==============================] - 6s 640ms/step - loss: 0.8146 - rmse: 0.1128 - lr: 0.0010\n",
+      "Epoch 10/500\n",
+      "8/8 [==============================] - 5s 546ms/step - loss: 0.7484 - rmse: 0.1114 - lr: 0.0010\n",
+      "Epoch 11/500\n",
+      "8/8 [==============================] - 5s 617ms/step - loss: 0.7022 - rmse: 0.1084 - lr: 0.0010\n",
+      "Epoch 12/500\n",
+      "8/8 [==============================] - 5s 612ms/step - loss: 0.6719 - rmse: 0.1071 - lr: 0.0010\n",
+      "Epoch 13/500\n",
+      "8/8 [==============================] - 5s 544ms/step - loss: 0.6429 - rmse: 0.1062 - lr: 0.0010\n",
+      "Epoch 14/500\n",
+      "8/8 [==============================] - 5s 549ms/step - loss: 0.6069 - rmse: 0.1029 - lr: 0.0010\n",
+      "Epoch 15/500\n",
+      "8/8 [==============================] - 6s 646ms/step - loss: 0.5734 - rmse: 0.1005 - lr: 0.0010\n",
+      "Epoch 16/500\n",
+      "8/8 [==============================] - 5s 541ms/step - loss: 0.5434 - rmse: 0.0967 - lr: 0.0010\n",
+      "Epoch 17/500\n",
+      "2/8 [=====>........................] - ETA: 3s - loss: 0.5234 - rmse: 0.0930"
+     ]
+    },
+    {
+     "ename": "KeyboardInterrupt",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
+      "\u001b[0;32m/tmp/ipykernel_56444/194592191.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      8\u001b[0m \u001b[0msta\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtime\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      9\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 10\u001b[0;31m neighbors, dis = SI.FineMapping(adata_ref, adata_query, sparse =True, JGs = None, \n\u001b[0m\u001b[1;32m     11\u001b[0m                                 \u001b[0mmodel_path\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mroot\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'Model_SI/'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     12\u001b[0m                                 \u001b[0mname\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'SI_T2'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ml1_reg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m1e-5\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ml2_reg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdropout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0.05\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mepoch\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m500\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py\u001b[0m in \u001b[0;36mFineMapping\u001b[0;34m(adata_ref, adata_query, sparse, model_path, WD_cutoff, JGs, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, polar, n_neighbors, dis_cutoff, seed)\u001b[0m\n\u001b[1;32m    660\u001b[0m         \u001b[0mmodel\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mload_model\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel_path\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcompile\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    661\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 662\u001b[0;31m         model = Train(X=X_ref, Y=Y, root = root, name = name, l1_reg = l1_reg, l2_reg = l2_reg,\n\u001b[0m\u001b[1;32m    663\u001b[0m                       \u001b[0mdropout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mdropout\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mepoch\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mepoch\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbatch_size\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mbatch_size\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnodes\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnodes\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    664\u001b[0m                       \u001b[0mlrr_patience\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlrr_patience\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mES_patience\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mES_patience\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmin_lr\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mmin_lr\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py\u001b[0m in \u001b[0;36mTrain\u001b[0;34m(X, Y, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, seed)\u001b[0m\n\u001b[1;32m    253\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    254\u001b[0m         \u001b[0mshuffle\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mFalse\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 255\u001b[0;31m     model.fit_generator(generator = batch_generator(X,\\\n\u001b[0m\u001b[1;32m    256\u001b[0m                                                   \u001b[0mY\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    257\u001b[0m                                                   \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0marange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py\u001b[0m in \u001b[0;36mfit_generator\u001b[0;34m(self, generator, steps_per_epoch, epochs, verbose, callbacks, validation_data, validation_steps, validation_freq, class_weight, max_queue_size, workers, use_multiprocessing, shuffle, initial_epoch)\u001b[0m\n\u001b[1;32m   2207\u001b[0m         \u001b[0;34m'Please use `Model.fit`, which supports generators.'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2208\u001b[0m         stacklevel=2)\n\u001b[0;32m-> 2209\u001b[0;31m     return self.fit(\n\u001b[0m\u001b[1;32m   2210\u001b[0m         \u001b[0mgenerator\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2211\u001b[0m         \u001b[0msteps_per_epoch\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0msteps_per_epoch\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/utils/traceback_utils.py\u001b[0m in \u001b[0;36merror_handler\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m     62\u001b[0m     \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     63\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 64\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     65\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0mException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m  \u001b[0;31m# pylint: disable=broad-except\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     66\u001b[0m       \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_process_traceback_frames\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__traceback__\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py\u001b[0m in \u001b[0;36mfit\u001b[0;34m(self, x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, shuffle, class_weight, sample_weight, initial_epoch, steps_per_epoch, validation_steps, validation_batch_size, validation_freq, max_queue_size, workers, use_multiprocessing)\u001b[0m\n\u001b[1;32m   1382\u001b[0m                 _r=1):\n\u001b[1;32m   1383\u001b[0m               \u001b[0mcallbacks\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mon_train_batch_begin\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstep\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1384\u001b[0;31m               \u001b[0mtmp_logs\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtrain_function\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0miterator\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1385\u001b[0m               \u001b[0;32mif\u001b[0m \u001b[0mdata_handler\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshould_sync\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1386\u001b[0m                 \u001b[0mcontext\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0masync_wait\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/util/traceback_utils.py\u001b[0m in \u001b[0;36merror_handler\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m    148\u001b[0m     \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    149\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 150\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    151\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0mException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    152\u001b[0m       \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_process_traceback_frames\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__traceback__\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, *args, **kwds)\u001b[0m\n\u001b[1;32m    913\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    914\u001b[0m       \u001b[0;32mwith\u001b[0m \u001b[0mOptionalXlaContext\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_jit_compile\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 915\u001b[0;31m         \u001b[0mresult\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_call\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwds\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    916\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    917\u001b[0m       \u001b[0mnew_tracing_count\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mexperimental_get_tracing_count\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py\u001b[0m in \u001b[0;36m_call\u001b[0;34m(self, *args, **kwds)\u001b[0m\n\u001b[1;32m    945\u001b[0m       \u001b[0;31m# In this case we have created variables on the first call, so we run the\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    946\u001b[0m       \u001b[0;31m# defunned version which is guaranteed to never create variables.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 947\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_stateless_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwds\u001b[0m\u001b[0;34m)\u001b[0m  \u001b[0;31m# pylint: disable=not-callable\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    948\u001b[0m     \u001b[0;32melif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_stateful_fn\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    949\u001b[0m       \u001b[0;31m# Release the lock early so that multiple threads can perform the call\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m   2954\u001b[0m       (graph_function,\n\u001b[1;32m   2955\u001b[0m        filtered_flat_args) = self._maybe_define_function(args, kwargs)\n\u001b[0;32m-> 2956\u001b[0;31m     return graph_function._call_flat(\n\u001b[0m\u001b[1;32m   2957\u001b[0m         filtered_flat_args, captured_inputs=graph_function.captured_inputs)  # pylint: disable=protected-access\n\u001b[1;32m   2958\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36m_call_flat\u001b[0;34m(self, args, captured_inputs, cancellation_manager)\u001b[0m\n\u001b[1;32m   1851\u001b[0m         and executing_eagerly):\n\u001b[1;32m   1852\u001b[0m       \u001b[0;31m# No tape is watching; skip to running the function.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1853\u001b[0;31m       return self._build_call_outputs(self._inference_function.call(\n\u001b[0m\u001b[1;32m   1854\u001b[0m           ctx, args, cancellation_manager=cancellation_manager))\n\u001b[1;32m   1855\u001b[0m     forward_backward = self._select_forward_and_backward_functions(\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36mcall\u001b[0;34m(self, ctx, args, cancellation_manager)\u001b[0m\n\u001b[1;32m    497\u001b[0m       \u001b[0;32mwith\u001b[0m \u001b[0m_InterpolateFunctionError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    498\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mcancellation_manager\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 499\u001b[0;31m           outputs = execute.execute(\n\u001b[0m\u001b[1;32m    500\u001b[0m               \u001b[0mstr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msignature\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    501\u001b[0m               \u001b[0mnum_outputs\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_num_outputs\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/execute.py\u001b[0m in \u001b[0;36mquick_execute\u001b[0;34m(op_name, num_outputs, inputs, attrs, ctx, name)\u001b[0m\n\u001b[1;32m     52\u001b[0m   \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     53\u001b[0m     \u001b[0mctx\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mensure_initialized\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 54\u001b[0;31m     tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,\n\u001b[0m\u001b[1;32m     55\u001b[0m                                         inputs, attrs, num_outputs)\n\u001b[1;32m     56\u001b[0m   \u001b[0;32mexcept\u001b[0m \u001b[0mcore\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_NotOkStatusException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+     ]
+    }
+   ],
+   "source": [
+    "#Set random generator seed\n",
+    "seed_num = 2022\n",
+    "seed(seed_num)\n",
+    "set_seed(seed_num)\n",
+    "tf.keras.utils.set_random_seed(seed_num)\n",
+    "\n",
+    "'''\n",
+    "Finely map single cells to spatial locations.\n",
+    "A model will be trained and saved to `root+name+'.h5'` if model_path is None and save is True.\n",
+    "The predicted coordinates of single cells will be saved in adata_query.obsm['spatial_mapping']\n",
+    "The predicted coordinates of beads will be saved in adata_ref.obsm['spatial_mapping']\n",
+    "Fine mapping information will be saved in adata_ref.obs['FM'] and adata_query.obs['FM']. True if a cell/bead\n",
+    "was mapped, otherwise False.\n",
+    "'''\n",
+    "sta = time()\n",
+    "\n",
+    "neighbors, dis = SI.FineMapping(adata_ref, adata_query, sparse =True, JGs = None, \n",
+    "                                model_path = None, root = 'Model_SI/',\n",
+    "                                name = 'SI_T2', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,\n",
+    "                                batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20,\n",
+    "                                ES_patience = 50, min_lr = 1e-5, save = True, polar = True,\n",
+    "                                n_neighbors = 1000, dis_cutoff = 20, seed = seed_num)\n",
+    "\n",
+    "end = time()\n",
+    "print((end - sta) / 60.0, 'min')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "aa54832f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
