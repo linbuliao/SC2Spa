@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference &mdash; SC2Spa 1.0 documentation</title>
+  <title>Map single cells to Space (Slide-seqV2 Mouse Hippocampus) &mdash; SC2Spa 1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -40,13 +41,19 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">General</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference</a><ul>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gallery</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Map single cells to Space (Slide-seqV2 Mouse Hippocampus)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Download-datasets">Download datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Load-datasets">Load datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Select-genes-using-Wasserstein-distance-(Optional)">Select genes using Wasserstein distance (Optional)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Fine-Mapping">Fine Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Imputation">Imputation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Spatially-Variable-Genes">Spatially Variable Genes</a></li>
 </ul>
 </li>
 </ul>
@@ -65,7 +72,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference</li>
+      <li class="breadcrumb-item active">Map single cells to Space (Slide-seqV2 Mouse Hippocampus)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/Tutorial_SI_1.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -354,8 +361,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Map-single-cells-from-Mouse-Hippocampus-to-Space-with-a-Slide-seqV2-dataset-as-the-reference">
-<h1>Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference<a class="headerlink" href="#Map-single-cells-from-Mouse-Hippocampus-to-Space-with-a-Slide-seqV2-dataset-as-the-reference" title="Permalink to this headline"></a></h1>
+<section id="Map-single-cells-to-Space-(Slide-seqV2-Mouse-Hippocampus)">
+<h1>Map single cells to Space (Slide-seqV2 Mouse Hippocampus)<a class="headerlink" href="#Map-single-cells-to-Space-(Slide-seqV2-Mouse-Hippocampus)" title="Permalink to this headline"></a></h1>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
@@ -365,7 +372,7 @@ div.rendered_html tbody tr:hover {
 
 <span class="kn">import</span> <span class="nn">anndata</span> <span class="k">as</span> <span class="nn">ad</span>
 <span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="nn">sc</span>
-<span class="kn">from</span> <span class="nn">SC2Spa</span> <span class="kn">import</span> <span class="n">SI</span>
+<span class="kn">from</span> <span class="nn">SC2Spa</span> <span class="kn">import</span> <span class="n">SI</span><span class="p">,</span> <span class="n">PP</span><span class="p">,</span> <span class="n">Vis</span><span class="p">,</span> <span class="n">SVA</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
@@ -535,8 +542,8 @@ Variable names are not unique. To make them unique, call `.var_names_make_unique
 </section>
 <section id="Fine-Mapping">
 <h2>Fine Mapping<a class="headerlink" href="#Fine-Mapping" title="Permalink to this headline"></a></h2>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Set random generator seed</span>
@@ -567,171 +574,255 @@ Variable names are not unique. To make them unique, call `.var_names_make_unique
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+</section>
+<section id="Visualization">
+<h2>Visualization<a class="headerlink" href="#Visualization" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-n of Referece Genes: 20527
-n of Target Genes: 24509
-n of Selected Genes: 19986
-(35349, 19986)
-(127165, 19986)
-</pre></div></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">CT</span> <span class="ow">in</span> <span class="n">adata_query</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;simp_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">CT</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Transfer:&#39;</span><span class="p">)</span>
+
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawCT1</span><span class="p">(</span><span class="n">adata_query</span><span class="p">,</span> <span class="n">coords_name</span> <span class="o">=</span> <span class="s1">&#39;spatial_mapping&#39;</span><span class="p">,</span>
+                <span class="n">CT</span> <span class="o">=</span> <span class="n">CT</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;simp_name&#39;</span><span class="p">,</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid2/&#39;</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
 </div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-2023-01-08 18:50:00.512863: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
-To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-01-08 18:50:01.267225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22406 MB memory:  -&gt; device: 0, name: NVIDIA TITAN RTX, pci bus id: 0000:3b:00.0, compute capability: 7.5
-/home/linbuliao/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py:255: UserWarning: `Model.fit_generator` is deprecated and will be removed in a future version. Please use `Model.fit`, which supports generators.
-  model.fit_generator(generator = batch_generator(X,\
-</pre></div></div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">CT</span> <span class="ow">in</span> <span class="n">adata_query</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;simp_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">CT</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Transfer:&#39;</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawCT1</span><span class="p">(</span><span class="n">adata_query</span><span class="p">,</span> <span class="n">coords_name</span> <span class="o">=</span> <span class="s1">&#39;spatial_mapping&#39;</span><span class="p">,</span>
+                <span class="n">CT</span> <span class="o">=</span> <span class="n">CT</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;simp_name&#39;</span><span class="p">,</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid2/&#39;</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;SC2HC1&#39;</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Epoch 1/500
-8/8 [==============================] - 9s 609ms/step - loss: 6.3297 - rmse: 0.2090 - lr: 0.0010
-Epoch 2/500
-8/8 [==============================] - 5s 543ms/step - loss: 4.5018 - rmse: 0.1535 - lr: 0.0010
-Epoch 3/500
-8/8 [==============================] - 5s 531ms/step - loss: 3.2364 - rmse: 0.1370 - lr: 0.0010
-Epoch 4/500
-8/8 [==============================] - 5s 533ms/step - loss: 2.3469 - rmse: 0.1262 - lr: 0.0010
-Epoch 5/500
-8/8 [==============================] - 5s 541ms/step - loss: 1.7205 - rmse: 0.1196 - lr: 0.0010
-Epoch 6/500
-8/8 [==============================] - 5s 551ms/step - loss: 1.3157 - rmse: 0.1159 - lr: 0.0010
-Epoch 7/500
-8/8 [==============================] - 5s 584ms/step - loss: 1.0709 - rmse: 0.1159 - lr: 0.0010
-Epoch 8/500
-8/8 [==============================] - 5s 600ms/step - loss: 0.9136 - rmse: 0.1138 - lr: 0.0010
-Epoch 9/500
-8/8 [==============================] - 6s 640ms/step - loss: 0.8146 - rmse: 0.1128 - lr: 0.0010
-Epoch 10/500
-8/8 [==============================] - 5s 546ms/step - loss: 0.7484 - rmse: 0.1114 - lr: 0.0010
-Epoch 11/500
-8/8 [==============================] - 5s 617ms/step - loss: 0.7022 - rmse: 0.1084 - lr: 0.0010
-Epoch 12/500
-8/8 [==============================] - 5s 612ms/step - loss: 0.6719 - rmse: 0.1071 - lr: 0.0010
-Epoch 13/500
-8/8 [==============================] - 5s 544ms/step - loss: 0.6429 - rmse: 0.1062 - lr: 0.0010
-Epoch 14/500
-8/8 [==============================] - 5s 549ms/step - loss: 0.6069 - rmse: 0.1029 - lr: 0.0010
-Epoch 15/500
-8/8 [==============================] - 6s 646ms/step - loss: 0.5734 - rmse: 0.1005 - lr: 0.0010
-Epoch 16/500
-8/8 [==============================] - 5s 541ms/step - loss: 0.5434 - rmse: 0.0967 - lr: 0.0010
-Epoch 17/500
-2/8 [=====&gt;........................] - ETA: 3s - loss: 0.5234 - rmse: 0.0930
-</pre></div></div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
 </div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">/tmp/ipykernel_56444/194592191.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span> sta <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span>
-<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg"> neighbors, dis = SI.FineMapping(adata_ref, adata_query, sparse =True, JGs = None,
-</span><span class="ansi-green-intense-fg ansi-bold">     11</span>                                 model_path <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> root <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;Model_SI/&#39;</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     12</span>                                 name <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#39;SI_T2&#39;</span><span class="ansi-blue-fg">,</span> l1_reg <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1e-5</span><span class="ansi-blue-fg">,</span> l2_reg <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> dropout <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.05</span><span class="ansi-blue-fg">,</span> epoch <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">500</span><span class="ansi-blue-fg">,</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">CT</span> <span class="ow">in</span> <span class="n">adata_ref</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;celltype_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">CT</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">16</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Transfer:&#39;</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawCT1</span><span class="p">(</span><span class="n">adata_ref</span><span class="p">,</span> <span class="n">coords_name</span> <span class="o">=</span> <span class="s1">&#39;spatial&#39;</span><span class="p">,</span>
+                <span class="n">CT</span> <span class="o">=</span> <span class="n">CT</span><span class="p">,</span> <span class="n">FM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;SSV2&#39;</span><span class="p">,</span>
+                <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid2/&#39;</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;HC1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Imputation">
+<h2>Imputation<a class="headerlink" href="#Imputation" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rc</span>
+<span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;family&#39;</span><span class="p">:</span><span class="s1">&#39;sans-serif&#39;</span><span class="p">,</span><span class="s1">&#39;sans-serif&#39;</span><span class="p">:[</span><span class="s1">&#39;Helvetica&#39;</span><span class="p">]})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py</span> in <span class="ansi-cyan-fg">FineMapping</span><span class="ansi-blue-fg">(adata_ref, adata_query, sparse, model_path, WD_cutoff, JGs, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, polar, n_neighbors, dis_cutoff, seed)</span>
-<span class="ansi-green-intense-fg ansi-bold">    660</span>         model <span class="ansi-blue-fg">=</span> load_model<span class="ansi-blue-fg">(</span>model_path<span class="ansi-blue-fg">,</span> compile<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    661</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 662</span><span class="ansi-red-fg">         model = Train(X=X_ref, Y=Y, root = root, name = name, l1_reg = l1_reg, l2_reg = l2_reg,
-</span><span class="ansi-green-intense-fg ansi-bold">    663</span>                       dropout <span class="ansi-blue-fg">=</span> dropout<span class="ansi-blue-fg">,</span> epoch <span class="ansi-blue-fg">=</span> epoch<span class="ansi-blue-fg">,</span> batch_size <span class="ansi-blue-fg">=</span> batch_size<span class="ansi-blue-fg">,</span> nodes <span class="ansi-blue-fg">=</span> nodes<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    664</span>                       lrr_patience <span class="ansi-blue-fg">=</span> lrr_patience<span class="ansi-blue-fg">,</span> ES_patience <span class="ansi-blue-fg">=</span> ES_patience<span class="ansi-blue-fg">,</span> min_lr <span class="ansi-blue-fg">=</span> min_lr<span class="ansi-blue-fg">,</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="n">n_colors</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span><span class="n">start</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">as_cmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py</span> in <span class="ansi-cyan-fg">Train</span><span class="ansi-blue-fg">(X, Y, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, seed)</span>
-<span class="ansi-green-intense-fg ansi-bold">    253</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    254</span>         shuffle <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">False</span>
-<span class="ansi-green-fg">--&gt; 255</span><span class="ansi-red-fg">     model.fit_generator(generator = batch_generator(X,\
-</span><span class="ansi-green-intense-fg ansi-bold">    256</span>                                                   Y<span class="ansi-blue-fg">,</span><span class="ansi-red-fg">\</span>
-<span class="ansi-green-intense-fg ansi-bold">    257</span>                                                   np<span class="ansi-blue-fg">.</span>arange<span class="ansi-blue-fg">(</span>X<span class="ansi-blue-fg">.</span>shape<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span><span class="ansi-red-fg">\</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">))</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">])</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;vertical&quot;</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;Transfer2/colorbar.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sta</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py</span> in <span class="ansi-cyan-fg">fit_generator</span><span class="ansi-blue-fg">(self, generator, steps_per_epoch, epochs, verbose, callbacks, validation_data, validation_steps, validation_freq, class_weight, max_queue_size, workers, use_multiprocessing, shuffle, initial_epoch)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2207</span>         <span class="ansi-blue-fg">&#39;Please use `Model.fit`, which supports generators.&#39;</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2208</span>         stacklevel=2)
-<span class="ansi-green-fg">-&gt; 2209</span><span class="ansi-red-fg">     return self.fit(
-</span><span class="ansi-green-intense-fg ansi-bold">   2210</span>         generator<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2211</span>         steps_per_epoch<span class="ansi-blue-fg">=</span>steps_per_epoch<span class="ansi-blue-fg">,</span>
+<span class="n">SI</span><span class="o">.</span><span class="n">NRD_CT</span><span class="p">(</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">dis</span><span class="p">,</span> <span class="n">adata_ref</span><span class="p">,</span> <span class="n">adata_query</span><span class="p">,</span>
+          <span class="n">ct_name</span> <span class="o">=</span> <span class="s1">&#39;simp_name&#39;</span><span class="p">,</span> <span class="n">dis_min</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">exclude_CTs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">])</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/keras/utils/traceback_utils.py</span> in <span class="ansi-cyan-fg">error_handler</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     62</span>     filtered_tb <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
-<span class="ansi-green-intense-fg ansi-bold">     63</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 64</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">return</span> fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     65</span>     <span class="ansi-green-fg">except</span> Exception <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>  <span class="ansi-red-fg"># pylint: disable=broad-except</span>
-<span class="ansi-green-intense-fg ansi-bold">     66</span>       filtered_tb <span class="ansi-blue-fg">=</span> _process_traceback_frames<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">.</span>__traceback__<span class="ansi-blue-fg">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">end</span> <span class="o">-</span> <span class="n">sta</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;min(s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="n">n_colors</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span><span class="n">start</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">as_cmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py</span> in <span class="ansi-cyan-fg">fit</span><span class="ansi-blue-fg">(self, x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, shuffle, class_weight, sample_weight, initial_epoch, steps_per_epoch, validation_steps, validation_batch_size, validation_freq, max_queue_size, workers, use_multiprocessing)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1382</span>                 _r=1):
-<span class="ansi-green-intense-fg ansi-bold">   1383</span>               callbacks<span class="ansi-blue-fg">.</span>on_train_batch_begin<span class="ansi-blue-fg">(</span>step<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">-&gt; 1384</span><span class="ansi-red-fg">               </span>tmp_logs <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>train_function<span class="ansi-blue-fg">(</span>iterator<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1385</span>               <span class="ansi-green-fg">if</span> data_handler<span class="ansi-blue-fg">.</span>should_sync<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1386</span>                 context<span class="ansi-blue-fg">.</span>async_wait<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="k">for</span> <span class="n">CT</span> <span class="ow">in</span> <span class="n">adata_query</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;simp_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">CT</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">]):</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">CT</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawCT2</span><span class="p">(</span><span class="n">adata_ref</span><span class="p">,</span> <span class="n">CT</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">NRD</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">colorbar</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;xcoord&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;ycoord&#39;</span><span class="p">,</span>
+               <span class="n">root</span><span class="o">=</span><span class="s1">&#39;Transfer2/FM_NRD/&#39;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="s1">&#39;SC2HC1&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sta</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/util/traceback_utils.py</span> in <span class="ansi-cyan-fg">error_handler</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    148</span>     filtered_tb <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>
-<span class="ansi-green-intense-fg ansi-bold">    149</span>     <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 150</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">return</span> fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    151</span>     <span class="ansi-green-fg">except</span> Exception <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    152</span>       filtered_tb <span class="ansi-blue-fg">=</span> _process_traceback_frames<span class="ansi-blue-fg">(</span>e<span class="ansi-blue-fg">.</span>__traceback__<span class="ansi-blue-fg">)</span>
+<span class="n">adata_impute</span> <span class="o">=</span> <span class="n">SI</span><span class="o">.</span><span class="n">NRD_impute</span><span class="p">(</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">dis</span><span class="p">,</span> <span class="n">adata_ref</span><span class="p">,</span> <span class="n">adata_query</span><span class="p">,</span>
+                             <span class="n">ct_name</span><span class="o">=</span><span class="s1">&#39;simp_name&#39;</span><span class="p">,</span> <span class="n">dis_min</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">exclude_CTs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;nan&#39;</span><span class="p">])</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *args, **kwds)</span>
-<span class="ansi-green-intense-fg ansi-bold">    913</span>
-<span class="ansi-green-intense-fg ansi-bold">    914</span>       <span class="ansi-green-fg">with</span> OptionalXlaContext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>_jit_compile<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 915</span><span class="ansi-red-fg">         </span>result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_call<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwds<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    916</span>
-<span class="ansi-green-intense-fg ansi-bold">    917</span>       new_tracing_count <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>experimental_get_tracing_count<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">end</span> <span class="o">-</span> <span class="n">sta</span><span class="p">)</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;min(s)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Spatially-Variable-Genes">
+<h2>Spatially Variable Genes<a class="headerlink" href="#Spatially-Variable-Genes" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">JGs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">adata_ref</span><span class="o">.</span><span class="n">var_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">adata_query</span><span class="o">.</span><span class="n">var_names</span><span class="p">))))</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">adata_ref</span><span class="p">[:,</span> <span class="n">JGs</span><span class="p">]</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py</span> in <span class="ansi-cyan-fg">_call</span><span class="ansi-blue-fg">(self, *args, **kwds)</span>
-<span class="ansi-green-intense-fg ansi-bold">    945</span>       <span class="ansi-red-fg"># In this case we have created variables on the first call, so we run the</span>
-<span class="ansi-green-intense-fg ansi-bold">    946</span>       <span class="ansi-red-fg"># defunned version which is guaranteed to never create variables.</span>
-<span class="ansi-green-fg">--&gt; 947</span><span class="ansi-red-fg">       </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_stateless_fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwds<span class="ansi-blue-fg">)</span>  <span class="ansi-red-fg"># pylint: disable=not-callable</span>
-<span class="ansi-green-intense-fg ansi-bold">    948</span>     <span class="ansi-green-fg">elif</span> self<span class="ansi-blue-fg">.</span>_stateful_fn <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    949</span>       <span class="ansi-red-fg"># Release the lock early so that multiple threads can perform the call</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SI</span><span class="o">.</span><span class="n">Self_Mapping</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">sparse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">model_path</span> <span class="o">=</span> <span class="s1">&#39;Model_SI/SI_T2.h5&#39;</span><span class="p">)</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2954</span>       (graph_function,
-<span class="ansi-green-intense-fg ansi-bold">   2955</span>        filtered_flat_args) = self._maybe_define_function(args, kwargs)
-<span class="ansi-green-fg">-&gt; 2956</span><span class="ansi-red-fg">     return graph_function._call_flat(
-</span><span class="ansi-green-intense-fg ansi-bold">   2957</span>         filtered_flat_args, captured_inputs=graph_function.captured_inputs)  # pylint: disable=protected-access
-<span class="ansi-green-intense-fg ansi-bold">   2958</span>
+<span class="n">SVA</span><span class="o">.</span><span class="n">PrioritizeLPG</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">Model</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span> <span class="n">percent</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">scale_factor</span> <span class="o">=</span> <span class="mf">1e3</span><span class="p">,</span>
+                  <span class="n">Norm</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py</span> in <span class="ansi-cyan-fg">_call_flat</span><span class="ansi-blue-fg">(self, args, captured_inputs, cancellation_manager)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1851</span>         and executing_eagerly):
-<span class="ansi-green-intense-fg ansi-bold">   1852</span>       <span class="ansi-red-fg"># No tape is watching; skip to running the function.</span>
-<span class="ansi-green-fg">-&gt; 1853</span><span class="ansi-red-fg">       return self._build_call_outputs(self._inference_function.call(
-</span><span class="ansi-green-intense-fg ansi-bold">   1854</span>           ctx, args, cancellation_manager=cancellation_manager))
-<span class="ansi-green-intense-fg ansi-bold">   1855</span>     forward_backward = self._select_forward_and_backward_functions(
+<span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;imp_sumup_norm&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="n">n_colors</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span><span class="n">start</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">as_cmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py</span> in <span class="ansi-cyan-fg">call</span><span class="ansi-blue-fg">(self, ctx, args, cancellation_manager)</span>
-<span class="ansi-green-intense-fg ansi-bold">    497</span>       <span class="ansi-green-fg">with</span> _InterpolateFunctionError<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    498</span>         <span class="ansi-green-fg">if</span> cancellation_manager <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 499</span><span class="ansi-red-fg">           outputs = execute.execute(
-</span><span class="ansi-green-intense-fg ansi-bold">    500</span>               str<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>signature<span class="ansi-blue-fg">.</span>name<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">    501</span>               num_outputs<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>_num_outputs<span class="ansi-blue-fg">,</span>
+<span class="k">def</span> <span class="nf">VizCus</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x_name</span><span class="p">,</span> <span class="n">x_label</span><span class="p">,</span> <span class="n">y_name</span><span class="p">,</span> <span class="n">y_label</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+           <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">28</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
-<span class="ansi-green-fg">~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/execute.py</span> in <span class="ansi-cyan-fg">quick_execute</span><span class="ansi-blue-fg">(op_name, num_outputs, inputs, attrs, ctx, name)</span>
-<span class="ansi-green-intense-fg ansi-bold">     52</span>   <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     53</span>     ctx<span class="ansi-blue-fg">.</span>ensure_initialized<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 54</span><span class="ansi-red-fg">     tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,
-</span><span class="ansi-green-intense-fg ansi-bold">     55</span>                                         inputs, attrs, num_outputs)
-<span class="ansi-green-intense-fg ansi-bold">     56</span>   <span class="ansi-green-fg">except</span> core<span class="ansi-blue-fg">.</span>_NotOkStatusException <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fontsize</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">c_name</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">x_name</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">y_name</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">)</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">vmin</span><span class="o">!=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">x_name</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">y_name</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c_name</span><span class="p">],</span> <span class="n">vmin</span> <span class="o">=</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">x_name</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">y_name</span><span class="p">],</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">c_name</span><span class="p">],</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">y_label</span><span class="p">)</span>
 
-<span class="ansi-red-fg">KeyboardInterrupt</span>:
-</pre></div></div>
+    <span class="k">if</span><span class="p">(</span><span class="n">save</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Transfer2/&#39;</span> <span class="o">+</span> <span class="n">save</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">,</span>
+                    <span class="n">dpi</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">JCs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">adata_ref</span><span class="o">.</span><span class="n">obs_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">adata_impute</span><span class="o">.</span><span class="n">obs_names</span><span class="p">))))</span>
+
+<span class="n">pearson_JGs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">JGs</span><span class="p">),</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gene&#39;</span><span class="p">,</span> <span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">])</span>
+<span class="n">pearson_JGs</span><span class="p">[</span><span class="s1">&#39;gene&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">JGs</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">JG</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">JGs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">adata_impute</span><span class="p">[</span><span class="n">JCs</span><span class="p">,</span> <span class="n">JG</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">adata_ref</span><span class="p">[</span><span class="n">JCs</span><span class="p">,</span> <span class="n">JG</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+    <span class="n">pearson_JGs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;pearson_r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pearson_JGs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">calculate_qc_metrics</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">percent_top</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log1p</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;percent_cell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;n_cells_by_counts&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">adata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[[</span><span class="s1">&#39;percent_cell&#39;</span><span class="p">,</span> <span class="s1">&#39;imp_sumup_norm&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">t</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span><span class="p">[</span><span class="s1">&#39;gene&#39;</span><span class="p">,</span> <span class="s1">&#39;percent_cell&#39;</span><span class="p">,</span> <span class="s1">&#39;imp_sumup_norm&#39;</span><span class="p">]</span>
+<span class="n">pearson_JGs</span> <span class="o">=</span> <span class="n">pearson_JGs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">VizCus</span><span class="p">(</span><span class="n">pearson_JGs</span><span class="p">,</span> <span class="n">x_name</span> <span class="o">=</span> <span class="s1">&#39;imp_sumup_norm&#39;</span><span class="p">,</span> <span class="n">x_label</span> <span class="o">=</span> <span class="s1">&#39;Contribution to Location Prediction&#39;</span><span class="p">,</span>
+       <span class="n">y_name</span> <span class="o">=</span> <span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="n">y_label</span> <span class="o">=</span> <span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;percent_cell&#39;</span><span class="p">,</span>
+       <span class="n">vmin</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;Transfer2_imp_r_pcell.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pearson_JGs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Transfer2/T2_stats.csv&#39;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1">#pearson_JGs = pd.read_csv(&#39;Transfer2/T2_stats.csv&#39;)</span>
+<span class="n">pearson_JGs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="n">n_colors</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span><span class="n">start</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">rot</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">as_cmap</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">GeneInfo</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;GeneInfo_DS_CTS.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">GLs</span> <span class="o">=</span> <span class="n">pearson_JGs</span><span class="p">[</span><span class="n">pearson_JGs</span><span class="p">[</span><span class="s1">&#39;percent_cell&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mf">0.01</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pearson_r&#39;</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;gene&#39;</span><span class="p">][:</span><span class="mi">20</span><span class="p">]</span>
+
+<span class="n">GLs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">GLs</span><span class="p">))</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">GLs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">32</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="mi">32</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;scRNAseq:&#39;</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawGenes2</span><span class="p">(</span><span class="n">adata_query</span><span class="p">,</span> <span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span><span class="p">,</span> <span class="n">lim</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                   <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span>
+                   <span class="n">FM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">CTL</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;simp_name&#39;</span><span class="p">,</span> <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid1/&#39;</span><span class="p">,</span>
+                   <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">x_name</span> <span class="o">=</span> <span class="s1">&#39;x_transfer&#39;</span><span class="p">,</span> <span class="n">y_name</span> <span class="o">=</span> <span class="s1">&#39;y_transfer&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;AMB&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;ST:&#39;</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawGenes2</span><span class="p">(</span><span class="n">adata_ref</span><span class="p">,</span> <span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span><span class="p">,</span> <span class="n">lim</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span>
+                   <span class="n">FM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">CTL</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;SSV2&#39;</span><span class="p">,</span> <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid1/&#39;</span><span class="p">,</span>
+                   <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">x_name</span> <span class="o">=</span> <span class="s1">&#39;xcoord&#39;</span><span class="p">,</span> <span class="n">y_name</span> <span class="o">=</span> <span class="s1">&#39;ycoord&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;HC1&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Imputed ST:&#39;</span><span class="p">)</span>
+    <span class="n">Vis</span><span class="o">.</span><span class="n">DrawGenes2</span><span class="p">(</span><span class="n">adata_impute</span><span class="p">,</span> <span class="n">gene</span> <span class="o">=</span> <span class="n">gene</span><span class="p">,</span> <span class="n">lim</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                   <span class="n">xlim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">650</span><span class="p">,</span> <span class="mi">5750</span><span class="p">],</span> <span class="n">cmap</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">,</span>
+                   <span class="n">FM</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">CTL</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">c_name</span> <span class="o">=</span> <span class="s1">&#39;SSV2&#39;</span><span class="p">,</span> <span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;Transfer2/FM_Valid1/&#39;</span><span class="p">,</span>
+                   <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">x_name</span> <span class="o">=</span> <span class="s1">&#39;xcoord&#39;</span><span class="p">,</span> <span class="n">y_name</span> <span class="o">=</span> <span class="s1">&#39;ycoord&#39;</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;HC1_Impute&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:

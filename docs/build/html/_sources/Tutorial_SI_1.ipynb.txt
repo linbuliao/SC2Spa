@@ -2,10 +2,14 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "e3d160fa",
-   "metadata": {},
+   "id": "0134f159",
+   "metadata": {
+     "tags": [
+   	"npsphinx-thumbnail"
+   	]
+   },
    "source": [
-    "# Map single cells from Mouse Hippocampus to Space with a Slide-seqV2 dataset as the reference"
+    "# Map single cells to Space (Slide-seqV2 Mouse Hippocampus)"
    ]
   },
   {
@@ -20,7 +24,7 @@
     "\n",
     "import anndata as ad\n",
     "import scanpy as sc\n",
-    "from SC2Spa import SI\n",
+    "from SC2Spa import SI, PP, Vis, SVA\n",
     "\n",
     "import pandas as pd\n",
     "\n",
@@ -31,7 +35,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "2384f669",
+   "id": "74ade01d",
    "metadata": {},
    "source": [
     "## Download datasets"
@@ -113,7 +117,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "e5937ca8",
+   "id": "eebdac00",
    "metadata": {},
    "source": [
     "## Load datasets"
@@ -220,96 +224,10 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
-   "id": "d0c1fb93",
+   "execution_count": null,
+   "id": "0f4aae48",
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "n of Referece Genes: 20527\n",
-      "n of Target Genes: 24509\n",
-      "n of Selected Genes: 19986\n",
-      "(35349, 19986)\n",
-      "(127165, 19986)\n"
-     ]
-    },
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "2023-01-08 18:50:00.512863: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA\n",
-      "To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.\n",
-      "2023-01-08 18:50:01.267225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 22406 MB memory:  -> device: 0, name: NVIDIA TITAN RTX, pci bus id: 0000:3b:00.0, compute capability: 7.5\n",
-      "/home/linbuliao/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py:255: UserWarning: `Model.fit_generator` is deprecated and will be removed in a future version. Please use `Model.fit`, which supports generators.\n",
-      "  model.fit_generator(generator = batch_generator(X,\\\n"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "Epoch 1/500\n",
-      "8/8 [==============================] - 9s 609ms/step - loss: 6.3297 - rmse: 0.2090 - lr: 0.0010\n",
-      "Epoch 2/500\n",
-      "8/8 [==============================] - 5s 543ms/step - loss: 4.5018 - rmse: 0.1535 - lr: 0.0010\n",
-      "Epoch 3/500\n",
-      "8/8 [==============================] - 5s 531ms/step - loss: 3.2364 - rmse: 0.1370 - lr: 0.0010\n",
-      "Epoch 4/500\n",
-      "8/8 [==============================] - 5s 533ms/step - loss: 2.3469 - rmse: 0.1262 - lr: 0.0010\n",
-      "Epoch 5/500\n",
-      "8/8 [==============================] - 5s 541ms/step - loss: 1.7205 - rmse: 0.1196 - lr: 0.0010\n",
-      "Epoch 6/500\n",
-      "8/8 [==============================] - 5s 551ms/step - loss: 1.3157 - rmse: 0.1159 - lr: 0.0010\n",
-      "Epoch 7/500\n",
-      "8/8 [==============================] - 5s 584ms/step - loss: 1.0709 - rmse: 0.1159 - lr: 0.0010\n",
-      "Epoch 8/500\n",
-      "8/8 [==============================] - 5s 600ms/step - loss: 0.9136 - rmse: 0.1138 - lr: 0.0010\n",
-      "Epoch 9/500\n",
-      "8/8 [==============================] - 6s 640ms/step - loss: 0.8146 - rmse: 0.1128 - lr: 0.0010\n",
-      "Epoch 10/500\n",
-      "8/8 [==============================] - 5s 546ms/step - loss: 0.7484 - rmse: 0.1114 - lr: 0.0010\n",
-      "Epoch 11/500\n",
-      "8/8 [==============================] - 5s 617ms/step - loss: 0.7022 - rmse: 0.1084 - lr: 0.0010\n",
-      "Epoch 12/500\n",
-      "8/8 [==============================] - 5s 612ms/step - loss: 0.6719 - rmse: 0.1071 - lr: 0.0010\n",
-      "Epoch 13/500\n",
-      "8/8 [==============================] - 5s 544ms/step - loss: 0.6429 - rmse: 0.1062 - lr: 0.0010\n",
-      "Epoch 14/500\n",
-      "8/8 [==============================] - 5s 549ms/step - loss: 0.6069 - rmse: 0.1029 - lr: 0.0010\n",
-      "Epoch 15/500\n",
-      "8/8 [==============================] - 6s 646ms/step - loss: 0.5734 - rmse: 0.1005 - lr: 0.0010\n",
-      "Epoch 16/500\n",
-      "8/8 [==============================] - 5s 541ms/step - loss: 0.5434 - rmse: 0.0967 - lr: 0.0010\n",
-      "Epoch 17/500\n",
-      "2/8 [=====>........................] - ETA: 3s - loss: 0.5234 - rmse: 0.0930"
-     ]
-    },
-    {
-     "ename": "KeyboardInterrupt",
-     "evalue": "",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
-      "\u001b[0;32m/tmp/ipykernel_56444/194592191.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      8\u001b[0m \u001b[0msta\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtime\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      9\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 10\u001b[0;31m neighbors, dis = SI.FineMapping(adata_ref, adata_query, sparse =True, JGs = None, \n\u001b[0m\u001b[1;32m     11\u001b[0m                                 \u001b[0mmodel_path\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mroot\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'Model_SI/'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     12\u001b[0m                                 \u001b[0mname\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m'SI_T2'\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ml1_reg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m1e-5\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0ml2_reg\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdropout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0.05\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mepoch\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m500\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py\u001b[0m in \u001b[0;36mFineMapping\u001b[0;34m(adata_ref, adata_query, sparse, model_path, WD_cutoff, JGs, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, polar, n_neighbors, dis_cutoff, seed)\u001b[0m\n\u001b[1;32m    660\u001b[0m         \u001b[0mmodel\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mload_model\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmodel_path\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcompile\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0;32mFalse\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    661\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 662\u001b[0;31m         model = Train(X=X_ref, Y=Y, root = root, name = name, l1_reg = l1_reg, l2_reg = l2_reg,\n\u001b[0m\u001b[1;32m    663\u001b[0m                       \u001b[0mdropout\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mdropout\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mepoch\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mepoch\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbatch_size\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mbatch_size\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnodes\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnodes\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    664\u001b[0m                       \u001b[0mlrr_patience\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlrr_patience\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mES_patience\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mES_patience\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mmin_lr\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mmin_lr\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/SC2Spa/SI.py\u001b[0m in \u001b[0;36mTrain\u001b[0;34m(X, Y, root, name, l1_reg, l2_reg, dropout, epoch, batch_size, nodes, lrr_patience, ES_patience, min_lr, save, seed)\u001b[0m\n\u001b[1;32m    253\u001b[0m     \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    254\u001b[0m         \u001b[0mshuffle\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mFalse\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 255\u001b[0;31m     model.fit_generator(generator = batch_generator(X,\\\n\u001b[0m\u001b[1;32m    256\u001b[0m                                                   \u001b[0mY\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    257\u001b[0m                                                   \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0marange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshape\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py\u001b[0m in \u001b[0;36mfit_generator\u001b[0;34m(self, generator, steps_per_epoch, epochs, verbose, callbacks, validation_data, validation_steps, validation_freq, class_weight, max_queue_size, workers, use_multiprocessing, shuffle, initial_epoch)\u001b[0m\n\u001b[1;32m   2207\u001b[0m         \u001b[0;34m'Please use `Model.fit`, which supports generators.'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2208\u001b[0m         stacklevel=2)\n\u001b[0;32m-> 2209\u001b[0;31m     return self.fit(\n\u001b[0m\u001b[1;32m   2210\u001b[0m         \u001b[0mgenerator\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   2211\u001b[0m         \u001b[0msteps_per_epoch\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0msteps_per_epoch\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/utils/traceback_utils.py\u001b[0m in \u001b[0;36merror_handler\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m     62\u001b[0m     \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     63\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 64\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     65\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0mException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m  \u001b[0;31m# pylint: disable=broad-except\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     66\u001b[0m       \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_process_traceback_frames\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__traceback__\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/keras/engine/training.py\u001b[0m in \u001b[0;36mfit\u001b[0;34m(self, x, y, batch_size, epochs, verbose, callbacks, validation_split, validation_data, shuffle, class_weight, sample_weight, initial_epoch, steps_per_epoch, validation_steps, validation_batch_size, validation_freq, max_queue_size, workers, use_multiprocessing)\u001b[0m\n\u001b[1;32m   1382\u001b[0m                 _r=1):\n\u001b[1;32m   1383\u001b[0m               \u001b[0mcallbacks\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mon_train_batch_begin\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstep\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1384\u001b[0;31m               \u001b[0mtmp_logs\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtrain_function\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0miterator\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1385\u001b[0m               \u001b[0;32mif\u001b[0m \u001b[0mdata_handler\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshould_sync\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1386\u001b[0m                 \u001b[0mcontext\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0masync_wait\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/util/traceback_utils.py\u001b[0m in \u001b[0;36merror_handler\u001b[0;34m(*args, **kwargs)\u001b[0m\n\u001b[1;32m    148\u001b[0m     \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    149\u001b[0m     \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 150\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mfn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    151\u001b[0m     \u001b[0;32mexcept\u001b[0m \u001b[0mException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    152\u001b[0m       \u001b[0mfiltered_tb\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0m_process_traceback_frames\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0me\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__traceback__\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, *args, **kwds)\u001b[0m\n\u001b[1;32m    913\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    914\u001b[0m       \u001b[0;32mwith\u001b[0m \u001b[0mOptionalXlaContext\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_jit_compile\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 915\u001b[0;31m         \u001b[0mresult\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_call\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwds\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    916\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    917\u001b[0m       \u001b[0mnew_tracing_count\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mexperimental_get_tracing_count\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/def_function.py\u001b[0m in \u001b[0;36m_call\u001b[0;34m(self, *args, **kwds)\u001b[0m\n\u001b[1;32m    945\u001b[0m       \u001b[0;31m# In this case we have created variables on the first call, so we run the\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    946\u001b[0m       \u001b[0;31m# defunned version which is guaranteed to never create variables.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 947\u001b[0;31m       \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_stateless_fn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0mkwds\u001b[0m\u001b[0;34m)\u001b[0m  \u001b[0;31m# pylint: disable=not-callable\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    948\u001b[0m     \u001b[0;32melif\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_stateful_fn\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    949\u001b[0m       \u001b[0;31m# Release the lock early so that multiple threads can perform the call\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, *args, **kwargs)\u001b[0m\n\u001b[1;32m   2954\u001b[0m       (graph_function,\n\u001b[1;32m   2955\u001b[0m        filtered_flat_args) = self._maybe_define_function(args, kwargs)\n\u001b[0;32m-> 2956\u001b[0;31m     return graph_function._call_flat(\n\u001b[0m\u001b[1;32m   2957\u001b[0m         filtered_flat_args, captured_inputs=graph_function.captured_inputs)  # pylint: disable=protected-access\n\u001b[1;32m   2958\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36m_call_flat\u001b[0;34m(self, args, captured_inputs, cancellation_manager)\u001b[0m\n\u001b[1;32m   1851\u001b[0m         and executing_eagerly):\n\u001b[1;32m   1852\u001b[0m       \u001b[0;31m# No tape is watching; skip to running the function.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1853\u001b[0;31m       return self._build_call_outputs(self._inference_function.call(\n\u001b[0m\u001b[1;32m   1854\u001b[0m           ctx, args, cancellation_manager=cancellation_manager))\n\u001b[1;32m   1855\u001b[0m     forward_backward = self._select_forward_and_backward_functions(\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/function.py\u001b[0m in \u001b[0;36mcall\u001b[0;34m(self, ctx, args, cancellation_manager)\u001b[0m\n\u001b[1;32m    497\u001b[0m       \u001b[0;32mwith\u001b[0m \u001b[0m_InterpolateFunctionError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    498\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mcancellation_manager\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 499\u001b[0;31m           outputs = execute.execute(\n\u001b[0m\u001b[1;32m    500\u001b[0m               \u001b[0mstr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msignature\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mname\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    501\u001b[0m               \u001b[0mnum_outputs\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_num_outputs\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;32m~/anaconda3/lib/python3.9/site-packages/tensorflow/python/eager/execute.py\u001b[0m in \u001b[0;36mquick_execute\u001b[0;34m(op_name, num_outputs, inputs, attrs, ctx, name)\u001b[0m\n\u001b[1;32m     52\u001b[0m   \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     53\u001b[0m     \u001b[0mctx\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mensure_initialized\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 54\u001b[0;31m     tensors = pywrap_tfe.TFE_Py_Execute(ctx._handle, device_name, op_name,\n\u001b[0m\u001b[1;32m     55\u001b[0m                                         inputs, attrs, num_outputs)\n\u001b[1;32m     56\u001b[0m   \u001b[0;32mexcept\u001b[0m \u001b[0mcore\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_NotOkStatusException\u001b[0m \u001b[0;32mas\u001b[0m \u001b[0me\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
     "#Set random generator seed\n",
     "seed_num = 2022\n",
@@ -339,9 +257,302 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "id": "d3666b38",
+   "metadata": {},
+   "source": [
+    "## Visualization"
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": null,
-   "id": "aa54832f",
+   "id": "191fa846",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for CT in adata_query.obs['simp_name'].unique():\n",
+    "    \n",
+    "    print('*'*16)\n",
+    "    print(CT)\n",
+    "    print('*'*16)\n",
+    "    print('Transfer:')\n",
+    "    \n",
+    "    Vis.DrawCT1(adata_query, coords_name = 'spatial_mapping',\n",
+    "                CT = CT, c_name = 'simp_name',\n",
+    "                root = 'Transfer2/FM_Valid2/', save = None)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b86dcf4a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for CT in adata_query.obs['simp_name'].unique():\n",
+    "    print('*'*16)\n",
+    "    print(CT)\n",
+    "    print('*'*16)\n",
+    "    print('Transfer:')\n",
+    "    Vis.DrawCT1(adata_query, coords_name = 'spatial_mapping',\n",
+    "                CT = CT, c_name = 'simp_name',\n",
+    "                root = 'Transfer2/FM_Valid2/', save = 'SC2HC1')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "911489c8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for CT in adata_ref.obs['celltype_1'].unique():\n",
+    "    print('*'*16)\n",
+    "    print(CT)\n",
+    "    print('*'*16)\n",
+    "    print('Transfer:')\n",
+    "    Vis.DrawCT1(adata_ref, coords_name = 'spatial',\n",
+    "                CT = CT, FM = True, c_name = 'SSV2',\n",
+    "                root = 'Transfer2/FM_Valid2/', save = 'HC1')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cfb59ae1",
+   "metadata": {},
+   "source": [
+    "## Imputation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "13eb096f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from matplotlib import rc\n",
+    "rc('font', **{'family':'sans-serif','sans-serif':['Helvetica']})\n",
+    "plt.rcParams['font.size'] = 16\n",
+    "\n",
+    "cmap = sns.cubehelix_palette(n_colors = 32,start = 2, rot=1.5, as_cmap = True)\n",
+    "\n",
+    "a = np.array([[0,1]])\n",
+    "pl.figure(figsize=(9, 1.5))\n",
+    "img = pl.imshow(a, cmap=cmap)\n",
+    "pl.gca().set_visible(False)\n",
+    "cax = pl.axes([0, 0, 0.02, 1.6])\n",
+    "pl.colorbar(orientation=\"vertical\", cax=cax)\n",
+    "pl.savefig(\"Transfer2/colorbar.png\", bbox_inches='tight')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d45c6125",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sta = time()\n",
+    "\n",
+    "SI.NRD_CT(neighbors, dis, adata_ref, adata_query,\n",
+    "          ct_name = 'simp_name', dis_min = 0.1, exclude_CTs = ['nan'])\n",
+    "\n",
+    "end = time()\n",
+    "print((end - sta) / 60, 'min(s)')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2a6e7174",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cmap = sns.cubehelix_palette(n_colors = 32,start = 2, rot=1.5, as_cmap = True)\n",
+    "\n",
+    "for CT in adata_query.obs['simp_name'].unique():\n",
+    "    if(CT in ['nan']):\n",
+    "        continue\n",
+    "    print(CT)\n",
+    "    Vis.DrawCT2(adata_ref, CT, title = True, NRD = True, colorbar = False, cmap=cmap, s=2, x='xcoord', y='ycoord',\n",
+    "               root='Transfer2/FM_NRD/', save='SC2HC1')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bb16bfc4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sta = time()\n",
+    "\n",
+    "adata_impute = SI.NRD_impute(neighbors, dis, adata_ref, adata_query,\n",
+    "                             ct_name='simp_name', dis_min=0.1, exclude_CTs=['nan'])\n",
+    "\n",
+    "end = time()\n",
+    "print((end - sta) / 60, 'min(s)')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1f635301",
+   "metadata": {},
+   "source": [
+    "## Spatially Variable Genes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "721a95bf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "JGs = sorted(list(set(adata_ref.var_names).intersection(set(adata_query.var_names))))\n",
+    "adata = adata_ref[:, JGs]\n",
+    "\n",
+    "model = SI.Self_Mapping(adata, sparse = True, model_path = 'Model_SI/SI_T2.h5')\n",
+    "\n",
+    "SVA.PrioritizeLPG(adata, Model = model, percent = 0.5, scale_factor = 1e3,\n",
+    "                  Norm = True)\n",
+    "\n",
+    "adata.var.sort_values('imp_sumup_norm', ascending = False).head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c5d8beea",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cmap = sns.cubehelix_palette(n_colors = 32,start = 2, rot=1.5, as_cmap = True)\n",
+    "\n",
+    "def VizCus(df, x_name, x_label, y_name, y_label, c_name = None,\n",
+    "           fontsize = 28, vmin= -0.05, vmax = 0.5, s = 14, save = None):\n",
+    "    \n",
+    "    plt.rcParams['font.size'] = fontsize\n",
+    "    plt.figure(figsize = (12, 8))\n",
+    "    if(c_name == None):\n",
+    "        plt.scatter(df[x_name], df[y_name], s = s)\n",
+    "    elif(vmin!=None):\n",
+    "        plt.scatter(df[x_name], df[y_name], s = s, alpha = 0.7,\n",
+    "                c = df[c_name], vmin = vmin, vmax = vmax, cmap = cmap)\n",
+    "    else:\n",
+    "        plt.scatter(df[x_name], df[y_name], s = s, alpha = 0.7,\n",
+    "                c = df[c_name], cmap = cmap)\n",
+    "    plt.colorbar()\n",
+    "    plt.xlabel(x_label)\n",
+    "    plt.ylabel(y_label)\n",
+    "    \n",
+    "    if(save != None):\n",
+    "        plt.savefig('Transfer2/' + save + '.png',\n",
+    "                    dpi = 128, bbox_inches='tight')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "366ed2c2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "JCs = sorted(list(set(adata_ref.obs_names).intersection(set(adata_impute.obs_names))))\n",
+    "\n",
+    "pearson_JGs = pd.DataFrame(np.zeros((len(JGs), 3)), columns = ['gene', 'pearson_r', 'p']) \n",
+    "pearson_JGs['gene'] = JGs\n",
+    "\n",
+    "for i, JG in enumerate(JGs):\n",
+    "    print(i)\n",
+    "    t = stats.pearsonr(adata_impute[JCs, JG].X.flatten(), adata_ref[JCs, JG].X.toarray().flatten())\n",
+    "    pearson_JGs.loc[i, 'pearson_r'] = t[0]\n",
+    "    pearson_JGs.loc[i, 'p'] = t[1]\n",
+    "    clear_output(wait = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5a40529d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sc.pp.calculate_qc_metrics(adata, percent_top=None, log1p=False, inplace=True)\n",
+    "adata.var['percent_cell'] = adata.var['n_cells_by_counts'] / adata.shape[0]\n",
+    "\n",
+    "t = adata.var[['percent_cell', 'imp_sumup_norm']].reset_index()\n",
+    "t.columns =['gene', 'percent_cell', 'imp_sumup_norm']\n",
+    "pearson_JGs = pearson_JGs.merge(t, how = 'left')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2e869a21",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "VizCus(pearson_JGs, x_name = 'imp_sumup_norm', x_label = 'Contribution to Location Prediction',\n",
+    "       y_name = 'pearson_r', y_label = 'pearson_r', s = 14, c_name = 'percent_cell',\n",
+    "       vmin = 0, vmax = 1, save = 'Transfer2_imp_r_pcell.png')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "affd85d2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pearson_JGs.sort_values('pearson_r', ascending = False).to_csv('Transfer2/T2_stats.csv', index = None)\n",
+    "#pearson_JGs = pd.read_csv('Transfer2/T2_stats.csv')\n",
+    "pearson_JGs.sort_values('pearson_r', ascending = False).head(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a0aeaee5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cmap = sns.cubehelix_palette(n_colors = 32,start = 2, rot=1.5, as_cmap = True)\n",
+    "\n",
+    "GeneInfo = pd.read_csv('GeneInfo_DS_CTS.csv', index_col = 0)\n",
+    "\n",
+    "GLs = pearson_JGs[pearson_JGs['percent_cell']>0.01].sort_values('pearson_r', ascending = False)['gene'][:20]\n",
+    "    \n",
+    "GLs = list(set(GLs))\n",
+    "s = 4\n",
+    "\n",
+    "for gene in GLs:\n",
+    "    print('*'*32)\n",
+    "    print(gene)\n",
+    "    print('*'*32)\n",
+    "    print('scRNAseq:')\n",
+    "    Vis.DrawGenes2(adata_query, gene = gene, lim = False, \n",
+    "                   xlim = [650, 5750], ylim = [650, 5750], cmap = cmap,\n",
+    "                   FM = True, CTL = None, c_name = 'simp_name', root = 'Transfer2/FM_Valid1/',\n",
+    "                   s = s, x_name = 'x_transfer', y_name = 'y_transfer', title = False, save = 'AMB')\n",
+    "    print('ST:')\n",
+    "    Vis.DrawGenes2(adata_ref, gene = gene, lim = True,\n",
+    "                   xlim = [650, 5750], ylim = [650, 5750], cmap = cmap,\n",
+    "                   FM = True, CTL = None, c_name = 'SSV2', root = 'Transfer2/FM_Valid1/', \n",
+    "                   s = s, x_name = 'xcoord', y_name = 'ycoord', title = False, save = 'HC1')\n",
+    "    print('Imputed ST:')\n",
+    "    Vis.DrawGenes2(adata_impute, gene = gene, lim = True,\n",
+    "                   xlim = [650, 5750], ylim = [650, 5750], cmap = cmap,\n",
+    "                   FM = True, CTL = None, c_name = 'SSV2', root = 'Transfer2/FM_Valid1/', \n",
+    "                   s = s, x_name = 'xcoord', y_name = 'ycoord', title = False, save = 'HC1_Impute')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c2074ab2",
    "metadata": {},
    "outputs": [],
    "source": []
