@@ -38,8 +38,6 @@ extensions = [
 	'sphinx_gallery.load_style'
 ]
 
-source_suffix = ['.rst', 'ipynb']
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
