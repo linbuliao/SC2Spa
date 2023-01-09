@@ -22,7 +22,7 @@ SC2Spa: Map transcriptome to space at cellular resolution
    :caption: Gallery
    :hidden:
    
-   Tutorial/Tutorial_SI_1
+   Tutorials
 
 
 
