@@ -14,3 +14,11 @@ python:
 formats:
   - pdf
   - epub
+  
+# Build documentation in the docs/ directory with Sphinx
+sphinx:
+   configuration: docs/conf.py
+  
+python:
+   install:
+   - requirements: docs/requirements.txt
