@@ -20,8 +20,8 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'SC2Spa'
-copyright = '2022, Linbu Liao'
-author = 'Linbu Liao'
+copyright = '2022, Linbu Liao and Won lab'
+author = 'Linbu Liao, Kyoung Jae Won'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
