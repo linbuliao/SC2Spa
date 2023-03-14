@@ -7,9 +7,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SC2Spa"
-version = "1.0"
+version = "1.1.4"
 authors = [
-  { name="Linbu Liao", email="linbu.liao@gmail.com" },
+  { name="Linbu Liao, Won Lab", email="linbu.liao@gmail.com" },
 ]
 description = "SC2Spa: a deep learning based approach to map transcriptome to spatial origins at cellular resolution"
 readme = "README.md"

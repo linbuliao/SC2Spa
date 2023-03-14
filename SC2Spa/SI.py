@@ -592,19 +592,148 @@ def Mapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cutoff 
     #Write prediction into adata
     adata_query.obsm['spatial_mapping'] = Query_pred_Y
 
-    
-def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cutoff = None, JGs = None,
-                root = 'Model_SI/', name = 'SI', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,
-                batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20, ES_patience = 50,
-                min_lr = 1e-5, save = True, polar = True, n_neighbors = 1000, dis_cutoff = 20, seed = None):
 
+def Reconstruct_scST(adata_ref, adata_query, n_neighbors=1000,
+                     dis_cutoff=15, n_layer_cell= [1, 4], cell_radius=5,
+                     seed=2023):
     '''
-    Finely map single cells to spatial locations.
+    1. Finely map single cells to spatial locations.
     A model will be trained and saved to `root+name+'.h5'` if model_path is None and save is True.
     The predicted coordinates of single cells will be saved in adata_query.obsm['spatial_mapping']
     The predicted coordinates of beads will be saved in adata_ref.obsm['spatial_mapping']
     Fine mapping information will be saved in adata_ref.obs['FM'] and adata_query.obs['FM']. True if a cell/bead
     was mapped, otherwise False.
+
+    2. Reconstruct ST data at single cell resolution
+    adata_query.obs['Dis2CloestBead'] stores the distance between a cell and the ST bead closest to it
+
+    Parameters
+    ----------
+    adata_ref
+        Reference anndata object. Gene expression matrix should be the shape of (cell, gene).
+        Spatial information should be stored in adata_ref.obsm['spatial'] in `np.array` format
+    adata_query
+        Query anndata object. Gene expression matrix should be the shape of (cell, gene).
+    n_neighbors
+        Number of the nearest neighbors of a bead or cell. This parameter is for
+        the KNN algorithm
+    dis_cutoff
+        Limit for the distance between a single cell and a ST bead. In the process
+         of fine mapping. Only the cells within the cutoff will be retained.
+    n_layer_cell
+        Number of cells in layers for sampling single cells for a ST bead.
+    cell_radius
+        Radius of a cell. For example, n_layer_cell=[1, 4] and cell_radius=5 means sampling 1 cell
+         from cells within 5 to a bead and at most 4 cells from cells between 5 and 15 to the bead.
+         It is at most 4 cells because a cell can be sampled more than once to deal with the case
+         that a bead has fewer cells than the user specified.
+    seed
+        seed for reconstructing the single-cell ST data
+    '''
+
+    # Extract location prediction
+    Ref_pred_Y = adata_ref.obsm['spatial_mapping']
+    Query_pred_Y = adata_query.obsm['spatial_mapping']
+
+    ##Fine Mapping
+    # Merge Prediction
+    Query_pred_Y = pd.DataFrame(Query_pred_Y, columns=['x_transfer', 'y_transfer'])
+    Query_pred_Y['source'] = 'SC'
+    Ref_pred_Y = pd.DataFrame(Ref_pred_Y, columns=['x_transfer', 'y_transfer'])
+    Ref_pred_Y['source'] = 'ST'
+    transfer_merge = pd.concat([Ref_pred_Y, Query_pred_Y])
+
+    n_ST = Ref_pred_Y.shape[0]
+    coords = transfer_merge[['x_transfer', 'y_transfer']]
+    neigh = NearestNeighbors(n_neighbors=n_neighbors, radius=dis_cutoff)
+    neigh.fit(coords)
+    dis, neighbors = neigh.kneighbors(coords, n_neighbors)
+
+    # Correct overlapping beads/cells
+    neighbors[:, 0] = list(range(neighbors.shape[0]))
+
+    # Extract Single Cell Info
+    dis_sc = dis[n_ST:]
+    neighbors_sc = neighbors[n_ST:]
+
+    # Remove single cells
+    # Remove beads that don't have cells/beads around within cutoff distance
+    ST_mask1 = dis[:n_ST, 1:].min(axis=1) < dis_cutoff
+    dis_st = dis[:n_ST][ST_mask1]
+    neighbors_st = neighbors[:n_ST][ST_mask1]
+
+    # Remove beads that don't have single cells around within cutoff distance
+    neighbors_st[dis_st > dis_cutoff] = -1
+    ST_mask2 = (neighbors_st >= n_ST).sum(axis=1) > 0
+    dis_st = dis_st[ST_mask2]
+    neighbors_st = neighbors_st[ST_mask2]
+
+    # Extract mapped indices of single cells and ST beads
+    MappedIndices = np.unique(neighbors_st)
+    MappedIndices = MappedIndices[MappedIndices != -1]
+
+    MappedSTInd = neighbors_st[:, 0]
+    MappedSCInd = MappedIndices[MappedIndices >= n_ST] - n_ST
+
+    # Write info into adata
+    adata_ref.obs['FM'] = False
+    ref_FM_ind = np.where(adata_ref.obs.columns == 'FM')[0][0]
+    adata_ref.obs.iloc[MappedSTInd, ref_FM_ind] = True
+
+    # Write fine mapping information of single cells
+    adata_query.obs['FM'] = False
+    query_FM_ind = np.where(adata_query.obs.columns == 'FM')[0][0]
+    adata_query.obs.iloc[MappedSCInd, query_FM_ind] = True
+
+    ## Reconstruct ST data at single cell resolution
+    # Calculate cells' distance to the closest ST bead
+    dis_sc[neighbors_sc >= n_ST] = 1e6
+    dis_sc[:, 0] = 1e6
+    adata_query.obs['Dis2ClosestBead'] = dis_sc.min(axis=1)
+    adata_query.obs['ClosestBead_order'] = neighbors_sc[range(neighbors_sc.shape[0]),
+    dis_sc.argmin(axis=1)]
+    adata_query.obs['ClosestBead_name'] = adata_ref.obs_names[adata_query.obs['ClosestBead_order']]
+
+    adata_query.obs['Recon_scST'] = False
+    adata_query.obs['Recon_scST_layer'] = -1
+    for layer, n_cell in enumerate(n_layer_cell):
+
+        if (layer == 0):
+            lower_bound = adata_query.obs['Dis2ClosestBead'] > -0.01
+            upper_bound = adata_query.obs['Dis2ClosestBead'] < ((layer + 1) * cell_radius)
+        else:
+            lower_bound = (adata_query.obs['Dis2ClosestBead'] > ((2 * layer - 1) * cell_radius)) | \
+                          (adata_query.obs['Dis2ClosestBead'] == ((2 * layer - 1) * cell_radius))
+            upper_bound = adata_query.obs['Dis2ClosestBead'] < ((2 * layer + 1) * cell_radius)
+
+        temp = adata_query.obs[lower_bound & upper_bound & (~adata_query.obs['Recon_scST'])]
+        temp = temp.groupby('ClosestBead_name').sample(n=n_cell, replace = True,
+                                                       random_state=seed).index
+        temp = pd.Series(temp).tolist()
+
+        adata_query.obs.loc[temp, 'Recon_scST'] = True
+        adata_query.obs.loc[temp, 'Recon_scST_layer'] = layer
+
+def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cutoff = None, JGs = None,
+                root = 'Model_SI/', name = 'SI', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,
+                batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20, ES_patience = 50,
+                min_lr = 1e-5, save = True, polar = True, FM = True, n_layer_cell = [1, 4],
+                cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = 2023):
+
+    '''
+    1. Finely map single cells to spatial locations.
+    A model will be trained and saved to `root+name+'.h5'` if model_path is None and save is True.
+    The predicted coordinates of single cells will be saved in adata_query.obsm['spatial_mapping']
+    The predicted coordinates of beads will be saved in adata_ref.obsm['spatial_mapping']
+    Fine mapping information will be saved in adata_ref.obs['FM'] and adata_query.obs['FM']. True if a cell/bead
+    was mapped, otherwise False.
+
+    2. Reconstruct ST data at single cell resolution
+    adata_query.obs['Dis2CloestBead'] stores the distance between a cell and the ST bead closest to it
+    adata_query.obs['Recon_scST'] marks the cells that are used to reconstruct single-cell ST data
+    adata_query.obs['Recon_scST_layer'] stores which reconstruction layer of cells. -1 means
+    a cell is not assigned to any ST bead. 0 means a cell is among the closest cells to a ST bead.
+    The greater the layer number, the further a cell is to the center of a ST bead.
 
     Parameters
     ----------
@@ -637,13 +766,16 @@ def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cut
         minimum learning rate
     ES_patience
         The patience for early stopping
-
-    Returns
-    -------
-    neighbors
-        Matrix of single cell neighbors of ST beads with the shape of (n_beads, n_neighbors)
-    dis
-        corresponding distance matrix of the neighbor matrix
+    n_neighbors
+        Number of the nearest neighbors of a bead or cell. This parameter is for
+        the KNN algorithm
+    dis_cutoff
+        Limit for the distance between a single cell and a ST bead. In the process
+         of fine mapping. Only the cells within the cutoff will be retained.
+    FM
+        Perform fine mapping and reconstruct ST data at single cell resolution if True
+    seed
+        seed for reconstructing the single-cell ST data
     '''
 
     # Extract values
@@ -672,56 +804,77 @@ def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cut
         Query_pred_Y = PP.ReMMNorm(Y_ref, Query_pred_Y)
         Ref_pred_Y = PP.ReMMNorm(Y_ref, Ref_pred_Y)
 
+    # Write info into adata
+    adata_ref.obsm['spatial_mapping'] = Ref_pred_Y
+    adata_query.obsm['spatial_mapping'] = Query_pred_Y
+
+    if(FM):
+        Reconstruct_scST(adata_ref, adata_query, n_neighbors = n_neighbors,
+                    dis_cutoff = dis_cutoff, n_layer_cell = n_layer_cell,
+                    cell_radius=cell_radius, seed = seed)
+
+def NRD_CT_preprocess(adata_ref, adata_query, n_neighbors=1000, dis_cutoff=15):
+    '''
+    Apply KNN algorithm to obtain the single cell neighbors of ST beads
+
+    Parameters
+    ----------
+    adata_ref
+        Reference anndata object. Gene expression matrix should be the shape of (cell, gene).
+        The predicted coordinates of beads should be stored in adata_ref.obsm['spatial_mapping']
+    adata_query
+        Query anndata object. Gene expression matrix should be the shape of (cell, gene).
+        The predicted coordinates of single cells should be stored in adata_query.obsm['spatial_mapping'].
+    n_neighbors
+        Number of the nearest neighbors of a bead or cell. This parameter is for the KNN algorithm
+    dis_cutoff
+        Maximum distance between a single cell and a ST bead. Only the cells within the cutoff
+         will be retained for further analysis.
+
+    Returns
+    -------
+    neighbors_st
+        A matrix of single cell neighbors of ST beads with the shape of (n_beads, n_neighbors)
+    dis_st
+        The distance matrix of the neighbor matrix
+    '''
+
+    # Extract location prediction
+    Ref_pred_Y = adata_ref.obsm['spatial_mapping']
+    Query_pred_Y = adata_query.obsm['spatial_mapping']
+
     ##Fine Mapping
-    #Merge Prediction
-    Query_pred_Y = pd.DataFrame(Query_pred_Y, columns = ['x_transfer', 'y_transfer'])
+    # Merge Prediction
+    Query_pred_Y = pd.DataFrame(Query_pred_Y, columns=['x_transfer', 'y_transfer'])
     Query_pred_Y['source'] = 'SC'
-    Ref_pred_Y = pd.DataFrame(Ref_pred_Y, columns = ['x_transfer', 'y_transfer'])
+    Ref_pred_Y = pd.DataFrame(Ref_pred_Y, columns=['x_transfer', 'y_transfer'])
     Ref_pred_Y['source'] = 'ST'
     transfer_merge = pd.concat([Ref_pred_Y, Query_pred_Y])
-    
+
     n_ST = Ref_pred_Y.shape[0]
     coords = transfer_merge[['x_transfer', 'y_transfer']]
-    neigh = NearestNeighbors(n_neighbors = n_neighbors, radius = dis_cutoff)
+    neigh = NearestNeighbors(n_neighbors=n_neighbors, radius=dis_cutoff)
     neigh.fit(coords)
     dis, neighbors = neigh.kneighbors(coords, n_neighbors)
-    
-    #Correct overlapping beads/cells
+
+    # Correct overlapping beads/cells
     neighbors[:, 0] = list(range(neighbors.shape[0]))
-    
-    #Remove single cells
-    #Remove beads that don't have cells/beads around within cutoff distance
-    ST_mask1 = dis[:n_ST, 1:].min(axis = 1) < dis_cutoff
-    dis = dis[:n_ST][ST_mask1]
-    neighbors = neighbors[:n_ST][ST_mask1]
-    
-    #Remove beads that don't have single cells around within cutoff distance
-    neighbors[dis>dis_cutoff] = -1
-    ST_mask2 = (neighbors >= n_ST).sum(axis = 1)> 0
-    dis = dis[ST_mask2]
-    neighbors = neighbors[ST_mask2]
-    
-    #Extract mapped indices of single cells and ST beads
-    MappedIndices = np.unique(neighbors)
-    MappedIndices = MappedIndices[MappedIndices != -1]
 
-    MappedSTInd = neighbors[:, 0]
-    MappedSCInd = MappedIndices[MappedIndices >= n_ST] - n_ST
+    # Remove single cells
+    # Remove beads that don't have cells/beads around within cutoff distance
+    ST_mask1 = dis[:n_ST, 1:].min(axis=1) < dis_cutoff
+    dis_st = dis[:n_ST][ST_mask1]
+    neighbors_st = neighbors[:n_ST][ST_mask1]
 
-    # Write info into adata
-    adata_ref.obsm['spatial_mapping'] = Ref_pred_Y[['x_transfer', 'y_transfer']].values
-    adata_ref.obs['FM'] = False
-    ref_FM_ind = np.where(adata_ref.obs.columns == 'FM')[0][0]
-    adata_ref.obs.iloc[MappedSTInd, ref_FM_ind] = True
-    adata_query.obsm['spatial_mapping'] = Query_pred_Y[['x_transfer', 'y_transfer']].values
-    adata_query.obs['FM'] = False
-    query_FM_ind = np.where(adata_query.obs.columns == 'FM')[0][0]
-    adata_query.obs.iloc[MappedSCInd, query_FM_ind] = True
+    # Remove beads that don't have single cells around within cutoff distance
+    neighbors_st[dis_st > dis_cutoff] = -1
+    ST_mask2 = (neighbors_st >= n_ST).sum(axis=1) > 0
+    dis_st = dis_st[ST_mask2]
+    neighbors_st = neighbors_st[ST_mask2]
 
-    return neighbors, dis
+    return neighbors_st, dis_st
 
-
-def NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=0.1):
+def NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', weight_constant = 1):
 
     '''
     Calculate the weights of nearby single cells for ST beads based on the fine mapping result
@@ -739,6 +892,8 @@ def NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_
         Query anndata object. Gene expression matrix should be the shape of (cell, gene).
         Cell type annotation should be stored in adata_query.obs[ct_name]
         Predicted locations should be stored in adata_query.obs[['x_transfer', 'y_transfer']]
+    weight_constant
+        A constant added up to the distance.
 
     Returns
     -------
@@ -761,18 +916,15 @@ def NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_
     df_neighbor[['center', 'neighbor']] = df_neighbor[['center', 'neighbor']].astype(int)
     df_neighbor['SCT'] = adata_query.obs.iloc[df_neighbor['neighbor'] - n_ST][ct_name].tolist()
 
-    # Truncate distance and weight
-    df_neighbor['dis_truncated'] = df_neighbor['dis']
-    index = df_neighbor[df_neighbor['dis_truncated'] < dis_min].index
-    df_neighbor.loc[index, 'dis_truncated'] = dis_min
-    df_neighbor['weight'] = 1 / df_neighbor['dis_truncated']
+    df_neighbor['weight'] = 1 / (df_neighbor['dis'] + weight_constant)
 
     return df_neighbor
 
 
-def NRD_CT(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=0.1, exclude_CTs=['nan']):
+def NRD_CT(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', weight_constant = 1, exclude_CTs=['nan']):
 
     '''
+    Normalized Reciprocal Distance
     Calculate the proportion of cell types for ST beads based on the NRD_weight output
     Predicted cell type proportion will be saved in adata_ref.obs.
 
@@ -800,7 +952,8 @@ def NRD_CT(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=
 
     '''
 
-    df_neighbor = NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name=ct_name, dis_min=dis_min)
+    df_neighbor = NRD_weight(neighbors, dis, adata_ref, adata_query,
+                             ct_name=ct_name, weight_constant=weight_constant)
 
     # Exclude CTs
     if(exclude_CTs != None):
@@ -808,7 +961,7 @@ def NRD_CT(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=
         df_neighbor = df_neighbor[select]
 
     # Calculate normalized reciprocal distance for each cell type
-    CT_NRD = df_neighbor[['center', 'SCT', 'weight']].groupby(['center', 'SCT']).sum()
+    CT_NRD = df_neighbor[['center', 'SCT', 'weight']].groupby(['center', 'SCT']).max()
     CT_NRD = CT_NRD / CT_NRD.groupby(['center']).sum()
 
     index = df_neighbor['center'].unique()
@@ -833,7 +986,8 @@ def NRD_CT(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=
     adata_ref.obs = adata_ref.obs.merge(CT_NRD_df, how='left', left_index=True, right_index=True)
 
 
-def NRD_impute(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_min=0.1, exclude_CTs=None):
+def NRD_impute(neighbors, dis, adata_ref, adata_query, ct_name='simp_name',
+               weight_constant = 1, exclude_CTs=None):
 
     '''
     Reconstruct the gene expression profile of ST beads based on the NRD_weight output
@@ -863,7 +1017,8 @@ def NRD_impute(neighbors, dis, adata_ref, adata_query, ct_name='simp_name', dis_
         An Anndata object that stores the reconstructed gene expression profile of ST beads
 
     '''
-    df_neighbor = NRD_weight(neighbors, dis, adata_ref, adata_query, ct_name=ct_name, dis_min=dis_min)
+    df_neighbor = NRD_weight(neighbors, dis, adata_ref, adata_query,
+                             ct_name=ct_name, weight_constant = weight_constant)
 
     if (exclude_CTs != None):
         select = df_neighbor['SCT'].apply(lambda x: x not in exclude_CTs)

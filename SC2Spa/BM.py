@@ -175,8 +175,8 @@ def eval_cv(preds: list, YNorm: np.array, test_indices: list, CI_BS = False, n_r
     ---------
     preds
         The predicted locations for the test beads in cross-validation
-    Y_true
-        The original locations of all beads
+    YNorm
+        The min-max normalized original locations of all beads
     test_indices
         The indices of test beads in cross-validation
     CI_BS

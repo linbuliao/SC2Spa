@@ -78,8 +78,8 @@ def VisCustomize1(adata:anndata.AnnData, coords_name: str, preds_name: str,
 
 def DrawSVG(adata:anndata.AnnData, GeneList:pd.DataFrame, target_field: str, coords_name='spatial',
             n_genes = 9, s = 2, lim = False, alpha = 0.8, xlim = [650, 5750], ylim = [650, 5750],
-            cmap = cmap, FM = True, root = 'figures/SVG/', fontsize=40, CT_name = 'MCT', CT = '',
-            Sparse = True, Bottom = False, output = None):
+            cmap = cmap, FM = True, scST = False, root = 'figures/SVG/', fontsize=40, CT_name = 'MCT',
+            CT = '', Sparse = True, Bottom = False, output = None):
 
     '''
     Show the expression of location predictive genes (or spatially variable genes)
@@ -95,6 +95,7 @@ def DrawSVG(adata:anndata.AnnData, GeneList:pd.DataFrame, target_field: str, coo
         Cell type information should be stored in `adata.obs[CT_name]` if `CT!=''`
         Fine mapping result should be stored in `adata.obs['FM']` if `FM==True`
         Coordinate Information should be stored in `adata.obsm[coords_name]`
+        Reconstruction info should be stored in adata.obs['Recon_scST']
     CT
         The cell type name to be drawn. Default ''.
     GeneList
@@ -109,6 +110,8 @@ def DrawSVG(adata:anndata.AnnData, GeneList:pd.DataFrame, target_field: str, coo
         size of beads in the figure
     FM
         Draw finely mapped beads of cells if True
+    scST
+        Draw reconstructed single-cell ST data if True
     cmap
         colormap. See matplotlib
     fontsize
@@ -123,7 +126,9 @@ def DrawSVG(adata:anndata.AnnData, GeneList:pd.DataFrame, target_field: str, coo
     None
     '''
 
-    if(FM):
+    if (scST):
+        adata = adata[adata.obs['Recon_scST']]
+    elif(FM):
         adata = adata[adata.obs['FM']]
     if(CT != ''):
         adata = adata[adata.obs[CT_name] == CT]
@@ -197,7 +202,7 @@ def DrawSVG(adata:anndata.AnnData, GeneList:pd.DataFrame, target_field: str, coo
 
 def DrawGenes2(adata:anndata.AnnData, gene:str, coords_name='spatial', lim = False,
                xlim = [650, 5750], ylim = [650, 5750], figsize = (10,10),
-               cmap = cmap, FM = True, CTL = None, c_name = 'simp_name',
+               cmap = cmap, FM = True, scST = False, CTL = None, c_name = 'simp_name',
                root = 'transfer2/FM_Valid1/', s = 2, Sparse = True, title = False, save = None):
 
     '''
@@ -212,6 +217,7 @@ def DrawGenes2(adata:anndata.AnnData, gene:str, coords_name='spatial', lim = Fal
         Cell type information should be stored in `adata.obs[c_name] if CTL!=None`
         Fine mapping result should be stored in `adata.obs['FM']` if `FM==True`
         Coordinate Information should be stored in `adata.obsm[coords_name]`
+        Reconstruction info should be stored in adata.obs['Recon_scST']
     gene
         The gene to be drawn
     CTL
@@ -222,6 +228,8 @@ def DrawGenes2(adata:anndata.AnnData, gene:str, coords_name='spatial', lim = Fal
         colormap. See matplotlib
     FM
         Draw finely mapped beads of cells if True
+    scST
+        Draw reconstructed single-cell ST data if True
     Sparse
         True if the gene expression matrix is saved in sparse format
     figsize
@@ -232,7 +240,9 @@ def DrawGenes2(adata:anndata.AnnData, gene:str, coords_name='spatial', lim = Fal
     None
 
     '''
-    if (FM):
+    if(scST):
+        adata = adata[adata.obs['Recon_scST']]
+    elif(FM):
         adata = adata[adata.obs['FM']]
     if(CTL != None):
         if(c_name != 'SSV2'):
@@ -277,7 +287,7 @@ def DrawGenes2(adata:anndata.AnnData, gene:str, coords_name='spatial', lim = Fal
 
 
 def DrawCT1(adata:anndata.AnnData, CT:str, ax = None, coords_name='spatial', s = 2, FM = True,
-            c_name='leiden', root='transfer2/FM_Valid2/', figsize = (10, 10), save=None):
+            scST = False, c_name='leiden', root='transfer2/FM_Valid2/', figsize = (10, 10), save=None):
 
     '''
     Show the spatial locations of a type of cells or beads
@@ -291,6 +301,7 @@ def DrawCT1(adata:anndata.AnnData, CT:str, ax = None, coords_name='spatial', s =
         Cell type information should be stored in `adata.obs[c_name]
         Fine mapping result should be stored in `adata.obs['FM']` if `FM==True`
         Coordinate Information should be stored in `adata.obsm[coords_name]`
+        Reconstruction info should be stored in adata.obs['Recon_scST']
     CT
         The cell type to be drawn. it must be one category in `adata.obs[c_name]`
     ax
@@ -298,7 +309,9 @@ def DrawCT1(adata:anndata.AnnData, CT:str, ax = None, coords_name='spatial', s =
     s
         size of beads in the figure
     FM
-        Draw finely mapped beads of cells if True
+        Draw finely mapped beads or cells if True.
+    scST
+        Draw reconstructed single-cell ST data if True.
     figsize
         figure size
 
@@ -307,8 +320,9 @@ def DrawCT1(adata:anndata.AnnData, CT:str, ax = None, coords_name='spatial', s =
     None
 
     '''
-
-    if(FM):
+    if(scST):
+        adata = adata[adata.obs['Recon_scST']]
+    elif(FM):
         adata = adata[adata.obs['FM']]
 
     if(c_name != 'SSV2'):
@@ -373,8 +387,6 @@ def DrawCT2(adata, CT:str, coords_name='spatial', title = False, NRD = True,
         The cell type to be drawn. it must be one category in `adata.obs[c_name]`
     s
         size of beads in the figure
-    FM
-        Draw finely mapped beads of cells if True
     NRD
         True if the NRD (Normalized Reciprocal Distance) result is used
     cmap
