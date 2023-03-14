@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Download datasets &mdash; SC2Spa 1.0 documentation</title>
+  <title>Map single cells to Space (Slide-seqV2 Mouse Hippocampus) &mdash; SC2Spa 1.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
@@ -45,22 +45,19 @@
 <p class="caption" role="heading"><span class="caption-text">Gallery</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../Tutorials.html">Tutorials</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Download datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Load-datasets">Load datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Select-genes-using-Wasserstein-distance-(Optional)">Select genes using Wasserstein distance (Optional)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Fine-Mapping">Fine Mapping</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Train-SC2Spa-with-the-genes-selected-based-on-Wassertain-distance">Train SC2Spa with the genes selected based on Wassertain distance</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Visualization">Visualization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Map single cells to Space (Slide-seqV2 Mouse Hippocampus)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Download-datasets">Download datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Load-datasets">Load datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Select-genes-using-Wasserstein-distance-(Optional)">Select genes using Wasserstein distance (Optional)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Fine-Mapping">Fine Mapping</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Train-SC2Spa-with-the-genes-selected-based-on-Wassertain-distance">Train SC2Spa with the genes selected based on Wassertain distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Train-SC2Spa-with-all-genes-shared-by-the-single-cell-and-spatial-transcriptomic-data">Train SC2Spa with all genes shared by the single-cell and spatial transcriptomic data</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#Train-SC2Spa-with-all-genes-shared-by-the-single-cell-and-spatial-transcriptomic-data">Train SC2Spa with all genes shared by the single-cell and spatial transcriptomic data</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Imputation">Imputation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Spatially-Variable-Genes">Spatially Variable Genes</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#Imputation">Imputation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Spatially-Variable-Genes">Spatially Variable Genes</a></li>
 </ul>
 </li>
 </ul>
@@ -80,7 +77,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../Tutorials.html">Tutorials</a></li>
-      <li class="breadcrumb-item active">Download datasets</li>
+      <li class="breadcrumb-item active">Map single cells to Space (Slide-seqV2 Mouse Hippocampus)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/Tutorial/Tutorial_SI_1.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -369,6 +366,8 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
+<section id="Map-single-cells-to-Space-(Slide-seqV2-Mouse-Hippocampus)">
+<h1>Map single cells to Space (Slide-seqV2 Mouse Hippocampus)<a class="headerlink" href="#Map-single-cells-to-Space-(Slide-seqV2-Mouse-Hippocampus)" title="Permalink to this headline"></a></h1>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -423,7 +422,7 @@ Version: 1.1.5
 </pre></div></div>
 </div>
 <section id="Download-datasets">
-<h1>Download datasets<a class="headerlink" href="#Download-datasets" title="Permalink to this headline"></a></h1>
+<h2>Download datasets<a class="headerlink" href="#Download-datasets" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -511,7 +510,7 @@ Dataset/ssHippo_RCT 100%[===================&gt;]   1.29M  5.18MB/s    in 0.2s
 </div>
 </section>
 <section id="Load-datasets">
-<h1>Load datasets<a class="headerlink" href="#Load-datasets" title="Permalink to this headline"></a></h1>
+<h2>Load datasets<a class="headerlink" href="#Load-datasets" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -565,7 +564,7 @@ Dataset/ssHippo_RCT 100%[===================&gt;]   1.29M  5.18MB/s    in 0.2s
 </div>
 </section>
 <section id="Select-genes-using-Wasserstein-distance-(Optional)">
-<h1>Select genes using Wasserstein distance (Optional)<a class="headerlink" href="#Select-genes-using-Wasserstein-distance-(Optional)" title="Permalink to this headline"></a></h1>
+<h2>Select genes using Wasserstein distance (Optional)<a class="headerlink" href="#Select-genes-using-Wasserstein-distance-(Optional)" title="Permalink to this headline"></a></h2>
 <p>This step is time-consuming for Slide-seqV2 data</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -627,9 +626,9 @@ tutorial1/WDs_T2.cs 100%[===================&gt;] 548.88K  --.-KB/s    in 0.1s
 </div>
 </section>
 <section id="Fine-Mapping">
-<h1>Fine Mapping<a class="headerlink" href="#Fine-Mapping" title="Permalink to this headline"></a></h1>
+<h2>Fine Mapping<a class="headerlink" href="#Fine-Mapping" title="Permalink to this headline"></a></h2>
 <section id="Train-SC2Spa-with-the-genes-selected-based-on-Wassertain-distance">
-<h2>Train SC2Spa with the genes selected based on Wassertain distance<a class="headerlink" href="#Train-SC2Spa-with-the-genes-selected-based-on-Wassertain-distance" title="Permalink to this headline"></a></h2>
+<h3>Train SC2Spa with the genes selected based on Wassertain distance<a class="headerlink" href="#Train-SC2Spa-with-the-genes-selected-based-on-Wassertain-distance" title="Permalink to this headline"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -775,7 +774,7 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_15_2.png" src="../_images/Tutorial_Tutorial_SI_1_15_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_16_2.png" src="../_images/Tutorial_Tutorial_SI_1_16_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -809,7 +808,7 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_16_2.png" src="../_images/Tutorial_Tutorial_SI_1_16_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_17_2.png" src="../_images/Tutorial_Tutorial_SI_1_17_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -843,7 +842,7 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_17_2.png" src="../_images/Tutorial_Tutorial_SI_1_17_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_18_2.png" src="../_images/Tutorial_Tutorial_SI_1_18_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -921,7 +920,7 @@ FineMapping(adata_ref, adata_query, sparse=True, model_path=None, WD_cutoff=None
 </pre></div></div>
 </div>
 <section id="Visualization">
-<h3>Visualization<a class="headerlink" href="#Visualization" title="Permalink to this headline"></a></h3>
+<h4>Visualization<a class="headerlink" href="#Visualization" title="Permalink to this headline"></a></h4>
 <p>Draw Fine mapping result</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -958,7 +957,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_20_1.png" src="../_images/Tutorial_Tutorial_SI_1_20_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_21_1.png" src="../_images/Tutorial_Tutorial_SI_1_21_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -976,7 +975,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_20_3.png" src="../_images/Tutorial_Tutorial_SI_1_20_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_21_3.png" src="../_images/Tutorial_Tutorial_SI_1_21_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -994,7 +993,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_20_5.png" src="../_images/Tutorial_Tutorial_SI_1_20_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_21_5.png" src="../_images/Tutorial_Tutorial_SI_1_21_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1012,7 +1011,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_20_7.png" src="../_images/Tutorial_Tutorial_SI_1_20_7.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_21_7.png" src="../_images/Tutorial_Tutorial_SI_1_21_7.png" />
 </div>
 </div>
 <p>Draw Reconstructed single-cell ST data</p>
@@ -1051,7 +1050,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_22_1.png" src="../_images/Tutorial_Tutorial_SI_1_22_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_23_1.png" src="../_images/Tutorial_Tutorial_SI_1_23_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1069,7 +1068,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_22_3.png" src="../_images/Tutorial_Tutorial_SI_1_22_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_23_3.png" src="../_images/Tutorial_Tutorial_SI_1_23_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1087,7 +1086,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_22_5.png" src="../_images/Tutorial_Tutorial_SI_1_22_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_23_5.png" src="../_images/Tutorial_Tutorial_SI_1_23_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1105,7 +1104,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_22_7.png" src="../_images/Tutorial_Tutorial_SI_1_22_7.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_23_7.png" src="../_images/Tutorial_Tutorial_SI_1_23_7.png" />
 </div>
 </div>
 <p>Draw reference ST data</p>
@@ -1143,7 +1142,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_24_1.png" src="../_images/Tutorial_Tutorial_SI_1_24_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_25_1.png" src="../_images/Tutorial_Tutorial_SI_1_25_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1161,7 +1160,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_24_3.png" src="../_images/Tutorial_Tutorial_SI_1_24_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_25_3.png" src="../_images/Tutorial_Tutorial_SI_1_25_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1179,13 +1178,13 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_24_5.png" src="../_images/Tutorial_Tutorial_SI_1_24_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_25_5.png" src="../_images/Tutorial_Tutorial_SI_1_25_5.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="Train-SC2Spa-with-all-genes-shared-by-the-single-cell-and-spatial-transcriptomic-data">
-<h2>Train SC2Spa with all genes shared by the single-cell and spatial transcriptomic data<a class="headerlink" href="#Train-SC2Spa-with-all-genes-shared-by-the-single-cell-and-spatial-transcriptomic-data" title="Permalink to this headline"></a></h2>
+<h3>Train SC2Spa with all genes shared by the single-cell and spatial transcriptomic data<a class="headerlink" href="#Train-SC2Spa-with-all-genes-shared-by-the-single-cell-and-spatial-transcriptomic-data" title="Permalink to this headline"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -1308,7 +1307,7 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_29_2.png" src="../_images/Tutorial_Tutorial_SI_1_29_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_30_2.png" src="../_images/Tutorial_Tutorial_SI_1_30_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1342,7 +1341,7 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_30_2.png" src="../_images/Tutorial_Tutorial_SI_1_30_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_31_2.png" src="../_images/Tutorial_Tutorial_SI_1_31_2.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1376,11 +1375,11 @@ Name: Recon_scST, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_31_2.png" src="../_images/Tutorial_Tutorial_SI_1_31_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_32_2.png" src="../_images/Tutorial_Tutorial_SI_1_32_2.png" />
 </div>
 </div>
 <section id="id1">
-<h3>Visualization<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h4>Visualization<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h4>
 <p>Draw Fine mapping result</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
@@ -1419,7 +1418,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_33_1.png" src="../_images/Tutorial_Tutorial_SI_1_33_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_34_1.png" src="../_images/Tutorial_Tutorial_SI_1_34_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1437,7 +1436,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_33_3.png" src="../_images/Tutorial_Tutorial_SI_1_33_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_34_3.png" src="../_images/Tutorial_Tutorial_SI_1_34_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1455,7 +1454,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_33_5.png" src="../_images/Tutorial_Tutorial_SI_1_33_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_34_5.png" src="../_images/Tutorial_Tutorial_SI_1_34_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1473,7 +1472,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_33_7.png" src="../_images/Tutorial_Tutorial_SI_1_33_7.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_34_7.png" src="../_images/Tutorial_Tutorial_SI_1_34_7.png" />
 </div>
 </div>
 <p>Draw reconstructed single-cell ST data</p>
@@ -1512,7 +1511,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_35_1.png" src="../_images/Tutorial_Tutorial_SI_1_35_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_36_1.png" src="../_images/Tutorial_Tutorial_SI_1_36_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1530,7 +1529,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_35_3.png" src="../_images/Tutorial_Tutorial_SI_1_35_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_36_3.png" src="../_images/Tutorial_Tutorial_SI_1_36_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1548,7 +1547,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_35_5.png" src="../_images/Tutorial_Tutorial_SI_1_35_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_36_5.png" src="../_images/Tutorial_Tutorial_SI_1_36_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1566,7 +1565,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_35_7.png" src="../_images/Tutorial_Tutorial_SI_1_35_7.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_36_7.png" src="../_images/Tutorial_Tutorial_SI_1_36_7.png" />
 </div>
 </div>
 <p>Draw reference ST data</p>
@@ -1607,7 +1606,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_37_1.png" src="../_images/Tutorial_Tutorial_SI_1_37_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_38_1.png" src="../_images/Tutorial_Tutorial_SI_1_38_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1625,7 +1624,7 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_37_3.png" src="../_images/Tutorial_Tutorial_SI_1_37_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_38_3.png" src="../_images/Tutorial_Tutorial_SI_1_38_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1643,14 +1642,14 @@ Transfer:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_37_5.png" src="../_images/Tutorial_Tutorial_SI_1_37_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_38_5.png" src="../_images/Tutorial_Tutorial_SI_1_38_5.png" />
 </div>
 </div>
 </section>
 </section>
 </section>
 <section id="Imputation">
-<h1>Imputation<a class="headerlink" href="#Imputation" title="Permalink to this headline"></a></h1>
+<h2>Imputation<a class="headerlink" href="#Imputation" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -1688,7 +1687,7 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_39_1.png" src="../_images/Tutorial_Tutorial_SI_1_39_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_40_1.png" src="../_images/Tutorial_Tutorial_SI_1_40_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1758,7 +1757,7 @@ CA1 Principal cells
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_41_2.png" src="../_images/Tutorial_Tutorial_SI_1_41_2.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_42_2.png" src="../_images/Tutorial_Tutorial_SI_1_42_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1773,7 +1772,7 @@ CA2 Principal cells
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_41_4.png" src="../_images/Tutorial_Tutorial_SI_1_41_4.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_42_4.png" src="../_images/Tutorial_Tutorial_SI_1_42_4.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1788,7 +1787,7 @@ CA3 Principal cells
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_41_6.png" src="../_images/Tutorial_Tutorial_SI_1_41_6.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_42_6.png" src="../_images/Tutorial_Tutorial_SI_1_42_6.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -1803,7 +1802,7 @@ Dentate Principal cells
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_41_8.png" src="../_images/Tutorial_Tutorial_SI_1_41_8.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_42_8.png" src="../_images/Tutorial_Tutorial_SI_1_42_8.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -1840,7 +1839,7 @@ Dentate Principal cells
 </div>
 </section>
 <section id="Spatially-Variable-Genes">
-<h1>Spatially Variable Genes<a class="headerlink" href="#Spatially-Variable-Genes" title="Permalink to this headline"></a></h1>
+<h2>Spatially Variable Genes<a class="headerlink" href="#Spatially-Variable-Genes" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
@@ -2223,7 +2222,7 @@ findfont: Generic family &#39;sans-serif&#39; not found because none of the foll
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_49_1.png" src="../_images/Tutorial_Tutorial_SI_1_49_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_50_1.png" src="../_images/Tutorial_Tutorial_SI_1_50_1.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -2274,7 +2273,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_1.png" src="../_images/Tutorial_Tutorial_SI_1_50_1.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_1.png" src="../_images/Tutorial_Tutorial_SI_1_51_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2289,7 +2288,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_3.png" src="../_images/Tutorial_Tutorial_SI_1_50_3.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_3.png" src="../_images/Tutorial_Tutorial_SI_1_51_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2304,7 +2303,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_5.png" src="../_images/Tutorial_Tutorial_SI_1_50_5.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_5.png" src="../_images/Tutorial_Tutorial_SI_1_51_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2322,7 +2321,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_7.png" src="../_images/Tutorial_Tutorial_SI_1_50_7.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_7.png" src="../_images/Tutorial_Tutorial_SI_1_51_7.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2337,7 +2336,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_9.png" src="../_images/Tutorial_Tutorial_SI_1_50_9.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_9.png" src="../_images/Tutorial_Tutorial_SI_1_51_9.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2352,7 +2351,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_11.png" src="../_images/Tutorial_Tutorial_SI_1_50_11.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_11.png" src="../_images/Tutorial_Tutorial_SI_1_51_11.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2370,7 +2369,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_13.png" src="../_images/Tutorial_Tutorial_SI_1_50_13.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_13.png" src="../_images/Tutorial_Tutorial_SI_1_51_13.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2385,7 +2384,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_15.png" src="../_images/Tutorial_Tutorial_SI_1_50_15.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_15.png" src="../_images/Tutorial_Tutorial_SI_1_51_15.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2400,7 +2399,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_17.png" src="../_images/Tutorial_Tutorial_SI_1_50_17.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_17.png" src="../_images/Tutorial_Tutorial_SI_1_51_17.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2418,7 +2417,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_19.png" src="../_images/Tutorial_Tutorial_SI_1_50_19.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_19.png" src="../_images/Tutorial_Tutorial_SI_1_51_19.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2433,7 +2432,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_21.png" src="../_images/Tutorial_Tutorial_SI_1_50_21.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_21.png" src="../_images/Tutorial_Tutorial_SI_1_51_21.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2448,7 +2447,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_23.png" src="../_images/Tutorial_Tutorial_SI_1_50_23.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_23.png" src="../_images/Tutorial_Tutorial_SI_1_51_23.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2466,7 +2465,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_25.png" src="../_images/Tutorial_Tutorial_SI_1_50_25.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_25.png" src="../_images/Tutorial_Tutorial_SI_1_51_25.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2481,7 +2480,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_27.png" src="../_images/Tutorial_Tutorial_SI_1_50_27.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_27.png" src="../_images/Tutorial_Tutorial_SI_1_51_27.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2496,7 +2495,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_29.png" src="../_images/Tutorial_Tutorial_SI_1_50_29.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_29.png" src="../_images/Tutorial_Tutorial_SI_1_51_29.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2514,7 +2513,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_31.png" src="../_images/Tutorial_Tutorial_SI_1_50_31.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_31.png" src="../_images/Tutorial_Tutorial_SI_1_51_31.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2529,7 +2528,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_33.png" src="../_images/Tutorial_Tutorial_SI_1_50_33.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_33.png" src="../_images/Tutorial_Tutorial_SI_1_51_33.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2544,7 +2543,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_35.png" src="../_images/Tutorial_Tutorial_SI_1_50_35.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_35.png" src="../_images/Tutorial_Tutorial_SI_1_51_35.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2562,7 +2561,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_37.png" src="../_images/Tutorial_Tutorial_SI_1_50_37.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_37.png" src="../_images/Tutorial_Tutorial_SI_1_51_37.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2577,7 +2576,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_39.png" src="../_images/Tutorial_Tutorial_SI_1_50_39.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_39.png" src="../_images/Tutorial_Tutorial_SI_1_51_39.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2592,7 +2591,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_41.png" src="../_images/Tutorial_Tutorial_SI_1_50_41.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_41.png" src="../_images/Tutorial_Tutorial_SI_1_51_41.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2610,7 +2609,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_43.png" src="../_images/Tutorial_Tutorial_SI_1_50_43.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_43.png" src="../_images/Tutorial_Tutorial_SI_1_51_43.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2625,7 +2624,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_45.png" src="../_images/Tutorial_Tutorial_SI_1_50_45.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_45.png" src="../_images/Tutorial_Tutorial_SI_1_51_45.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2640,7 +2639,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_47.png" src="../_images/Tutorial_Tutorial_SI_1_50_47.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_47.png" src="../_images/Tutorial_Tutorial_SI_1_51_47.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2658,7 +2657,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_49.png" src="../_images/Tutorial_Tutorial_SI_1_50_49.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_49.png" src="../_images/Tutorial_Tutorial_SI_1_51_49.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2673,7 +2672,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_51.png" src="../_images/Tutorial_Tutorial_SI_1_50_51.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_51.png" src="../_images/Tutorial_Tutorial_SI_1_51_51.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2688,7 +2687,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_53.png" src="../_images/Tutorial_Tutorial_SI_1_50_53.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_53.png" src="../_images/Tutorial_Tutorial_SI_1_51_53.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2706,7 +2705,7 @@ scRNAseq:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_55.png" src="../_images/Tutorial_Tutorial_SI_1_50_55.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_55.png" src="../_images/Tutorial_Tutorial_SI_1_51_55.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2721,7 +2720,7 @@ ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_57.png" src="../_images/Tutorial_Tutorial_SI_1_50_57.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_57.png" src="../_images/Tutorial_Tutorial_SI_1_51_57.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -2736,7 +2735,7 @@ Imputed ST:
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/Tutorial_Tutorial_SI_1_50_59.png" src="../_images/Tutorial_Tutorial_SI_1_50_59.png" />
+<img alt="../_images/Tutorial_Tutorial_SI_1_51_59.png" src="../_images/Tutorial_Tutorial_SI_1_51_59.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -2747,6 +2746,7 @@ Imputed ST:
 </pre></div>
 </div>
 </div>
+</section>
 </section>
 
 
