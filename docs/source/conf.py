@@ -35,7 +35,10 @@ release = '1.0'
 extensions = [
 	'sphinx_rtd_theme',
 	'nbsphinx',
-	'sphinx_gallery.load_style'
+	'sphinx_gallery.load_style',
+	'sphinx.ext.imgmath',
+	'sphinx.ext.ifconfig',
+	'sphinx.ext.imgconverter'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
