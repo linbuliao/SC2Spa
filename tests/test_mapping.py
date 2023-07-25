@@ -24,9 +24,9 @@ def test_mapping():
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
 
-    wget.download(https://figshare.com/ndownloader/files/38736651, out = 'Dataset/AdataMH1.h5ad')
-    wget.download(https://figshare.com/ndownloader/files/38738136, out = 'Dataset/AMB_HC.h5ad')
-    wget.download(https://figshare.com/ndownloader/files/38756529, out = 'Dataset/ssHippo_RCTD.csv')
+    wget.download('https://figshare.com/ndownloader/files/38736651', out = 'Dataset/AdataMH1.h5ad')
+    wget.download('https://figshare.com/ndownloader/files/38738136', out = 'Dataset/AMB_HC.h5ad')
+    wget.download('https://figshare.com/ndownloader/files/38756529', out = 'Dataset/ssHippo_RCTD.csv')
     
     if not os.path.exists('tutorial1'):
         os.makedirs('tutorial1')
