@@ -13,6 +13,7 @@ import tensorflow as tf
 
 
 import SC2Spa
+import wget
 
 def test_mapping():
 
@@ -23,9 +24,9 @@ def test_mapping():
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
 
-    !wget https://figshare.com/ndownloader/files/38736651 -O Dataset/AdataMH1.h5ad
-    !wget https://figshare.com/ndownloader/files/38738136 -O Dataset/AMB_HC.h5ad
-    !wget https://figshare.com/ndownloader/files/38756529 -O Dataset/ssHippo_RCTD.csv
+    wget.download(https://figshare.com/ndownloader/files/38736651, out = 'Dataset/AdataMH1.h5ad')
+    wget.download(https://figshare.com/ndownloader/files/38738136, out = 'Dataset/AMB_HC.h5ad')
+    wget.download(https://figshare.com/ndownloader/files/38756529, out = 'Dataset/ssHippo_RCTD.csv')
     
     if not os.path.exists('tutorial1'):
         os.makedirs('tutorial1')
