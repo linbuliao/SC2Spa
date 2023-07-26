@@ -71,13 +71,13 @@ def test_mapping():
     save = 'WDs_T2'
     
     # Download the precalculated Wasserstain distances between the scRNA-seq and ST datasets.
-    !wget https://figshare.com/ndownloader/files/38938874 -O tutorial1/WDs_T2.csv
+    wget.download('https://figshare.com/ndownloader/files/38938874', out = 'tutorial1/WDs_T2.csv')
     
     WDs = pd.read_csv(root + save + '.csv')
     JGs = sorted(WDs[WDs['Wasserstein_Distance'] < WD_cutoff]['Gene'].tolist())
     
     #Download Pretrained Model
-    !wget https://figshare.com/ndownloader/files/38938871 -O tutorial1/SI_T2_WD.h5
+    wget.download('https://figshare.com/ndownloader/files/38938871', out = 'tutorial1/SI_T2_WD.h5')
     
     #Set random generator seed
     seed_num = 2023
