@@ -85,7 +85,7 @@ def test_mapping():
     set_seed(seed_num)
     tf.keras.utils.set_random_seed(seed_num)
 
-    SI.FineMapping(adata_ref[:100], adata_query[:100], JGs = WDs, sparse =True,
+    SI.FineMapping(adata_ref[:100], adata_query[:100], JGs = JGs, sparse =True,
                model_path = 'Model_SI/SI_T2_WD.h5', polar = True,
                n_layer_cell = [1, 4], cell_radius = 5,
                n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
