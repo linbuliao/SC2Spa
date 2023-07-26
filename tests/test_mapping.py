@@ -62,11 +62,7 @@ def test_mapping():
     
     
     adata_query.obs['common_name'] = adata_query.obs['common_name'].str.replace('?', '')
-    adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.',\
-                                    expand = True)[0].str.split(',',\
-                                    expand = True)[0].str.split(' \(',\
-                                    expand = True)[0].str.replace('cortexm',\
-                                    'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')
+    adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.', expand = True)[0].str.split(',', expand = True)[0].str.split(' \(', expand = True)[0].str.replace('cortexm', 'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')
     
     WD_cutoff = 0.4
     root = 'tutorial1/'
@@ -96,24 +92,7 @@ def test_mapping():
     was mapped, otherwise False.
     '''
     
-    '''
-    sta = time()
-    
-    neighbors, dis = SI.FineMapping(adata_ref, adata_query, sparse =True, JGs = None,\
-                                    model_path = None, root = 'Model_SI/',\
-                                    name = 'SI_T2', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,\
-                                    batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20,\
-                                    ES_patience = 50, min_lr = 1e-5, save = True, polar = True,\
-                                    n_neighbors = 1000, dis_cutoff = 20, seed = seed_num)
-    
-    end = time()
-    print((end - sta) / 60.0, 'min')
-    '''
-    
-    SI.FineMapping(adata_ref, adata_query, JGs = JGs, sparse =True,\
-                   model_path = 'tutorial1/SI_T2_WD.h5', polar = True,\
-                   n_layer_cell = [1, 4], cell_radius = 5,\
-                   n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
+    SI.FineMapping(adata_ref, adata_query, JGs = JGs, sparse =True, model_path = 'tutorial1/SI_T2_WD.h5', polar = True, n_layer_cell = [1, 4], cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
     
     assert adata_query.obs['Recon_scST'].sum()==50305
 
