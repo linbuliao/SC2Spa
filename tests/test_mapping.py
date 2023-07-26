@@ -94,4 +94,4 @@ def test_mapping():
                n_neighbors = 100, dis_cutoff = 15, seed = seed_num)
 
     print(adata_query_sub.obs.columns)
-    assert isinstance(adata_query_sub.obs['FM'].sum(), int)
+    assert isinstance(adata_query_sub.obs['FM'].sum().item(), int)
