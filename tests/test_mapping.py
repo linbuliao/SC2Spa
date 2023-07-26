@@ -85,9 +85,9 @@ def test_mapping():
     set_seed(seed_num)
     tf.keras.utils.set_random_seed(seed_num)
 
-    SI.FineMapping(adata_ref[:100], adata_query[:100], JGs = JGs, sparse =True,
+    SI.FineMapping(adata_ref[:200], adata_query[:200], JGs = JGs, sparse =True,
                model_path = 'tutorial1/SI_T2_WD.h5', polar = True,
                n_layer_cell = [1, 4], cell_radius = 5,
-               n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
+               n_neighbors = 100, dis_cutoff = 15, seed = seed_num)
 
     assert isinstance(adata_query.obs['FM'].sum(), int)
