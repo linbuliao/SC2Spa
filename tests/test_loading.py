@@ -15,7 +15,7 @@ import tensorflow as tf
 import SC2Spa
 import wget
 
-def test_mapping():
+def test_loading():
 
     print(SC2Spa.__all__)
     print('*'*20)
