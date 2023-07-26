@@ -62,7 +62,9 @@ def test_mapping():
     
     
     adata_query.obs['common_name'] = adata_query.obs['common_name'].str.replace('?', '')
-    adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.', expand = True)[0].str.split(',', expand = True)[0].str.split(' \(', expand = True)[0].str.replace('cortexm', 'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')
+    adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.', expand = True)[0].str.split(',',
+                                    expand = True)[0].str.split(r' \(', expand = True)[0].str.replace('cortexm',
+                                    'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')
     
     WD_cutoff = 0.4
     root = 'tutorial1/'
@@ -92,7 +94,8 @@ def test_mapping():
     was mapped, otherwise False.
     '''
     
-    SI.FineMapping(adata_ref, adata_query, JGs = JGs, sparse =True, model_path = 'tutorial1/SI_T2_WD.h5', polar = True, n_layer_cell = [1, 4], cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
+    SI.FineMapping(adata_ref, adata_query, JGs = JGs, sparse =True, model_path = 'tutorial1/SI_T2_WD.h5',
+                   polar = True, n_layer_cell = [1, 4], cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = seed_num)
     
     assert adata_query.obs['Recon_scST'].sum()==50305
 
