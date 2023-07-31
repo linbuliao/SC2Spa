@@ -15,17 +15,6 @@ import sphinx_rtd_theme
 import os
 import sys
 #sys.path.insert(0, os.path.abspath('.'))
-from pathlib import Path
-HERE = Path(__file__).parent.parent
-sys.path.insert(0, str(HERE))
-
-import subprocess
-import sys
-
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-    
-install("SC2Spa")
 
 import SC2Spa
 
