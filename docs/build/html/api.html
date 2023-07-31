@@ -145,49 +145,49 @@
 <span id="spatial-inference"></span><h2>Spatial Inference<a class="headerlink" href="#module-SC2Spa.tl" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.FineMapping.html#SC2Spa.tl.FineMapping" title="SC2Spa.tl.FineMapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.FineMapping</span></code></a>(adata_ref, adata_query[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.FineMapping.html#SC2Spa.tl.FineMapping" title="SC2Spa.tl.FineMapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.FineMapping</span></code></a>(adata_ref, adata_query[, ...])</p></td>
 <td><p>Finely map single cells to spatial locations and Reconstruct ST data at single cell resolution</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.Reconstruct_scST.html#SC2Spa.tl.Reconstruct_scST" title="SC2Spa.tl.Reconstruct_scST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Reconstruct_scST</span></code></a>(adata_ref, adata_query)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.Reconstruct_scST.html#SC2Spa.tl.Reconstruct_scST" title="SC2Spa.tl.Reconstruct_scST"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Reconstruct_scST</span></code></a>(adata_ref, adata_query)</p></td>
 <td><p>Reconstruct ST data at single cell resolution</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.NRD_CT_preprocess.html#SC2Spa.tl.NRD_CT_preprocess" title="SC2Spa.tl.NRD_CT_preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_CT_preprocess</span></code></a>(adata_ref, adata_query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.NRD_CT_preprocess.html#SC2Spa.tl.NRD_CT_preprocess" title="SC2Spa.tl.NRD_CT_preprocess"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_CT_preprocess</span></code></a>(adata_ref, adata_query)</p></td>
 <td><p>Apply KNN algorithm to obtain the single cell neighbors of ST beads</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.NRD_weight.html#SC2Spa.tl.NRD_weight" title="SC2Spa.tl.NRD_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_weight</span></code></a>(neighbors, dis, adata_ref, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.NRD_weight.html#SC2Spa.tl.NRD_weight" title="SC2Spa.tl.NRD_weight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_weight</span></code></a>(neighbors, dis, adata_ref, ...)</p></td>
 <td><p>Calculate the weights of nearby single cells for ST beads based on the fine mapping result</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.NRD_CT.html#SC2Spa.tl.NRD_CT" title="SC2Spa.tl.NRD_CT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_CT</span></code></a>(neighbors, dis, adata_ref, adata_query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.NRD_CT.html#SC2Spa.tl.NRD_CT" title="SC2Spa.tl.NRD_CT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_CT</span></code></a>(neighbors, dis, adata_ref, adata_query)</p></td>
 <td><p>Normalized Reciprocal Distance</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.NRD_impute.html#SC2Spa.tl.NRD_impute" title="SC2Spa.tl.NRD_impute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_impute</span></code></a>(neighbors, dis, adata_ref, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.NRD_impute.html#SC2Spa.tl.NRD_impute" title="SC2Spa.tl.NRD_impute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.NRD_impute</span></code></a>(neighbors, dis, adata_ref, ...)</p></td>
 <td><p>Reconstruct the gene expression profile of ST beads based on the NRD_weight output</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.Train_transfer.html#SC2Spa.tl.Train_transfer" title="SC2Spa.tl.Train_transfer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Train_transfer</span></code></a>(adata, root, model_root[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.Train_transfer.html#SC2Spa.tl.Train_transfer" title="SC2Spa.tl.Train_transfer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Train_transfer</span></code></a>(adata, root, model_root[, ...])</p></td>
 <td><p>Finetune location prediction model (FCNN) on a specific cell type</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.SaveValidation.html#SC2Spa.tl.SaveValidation" title="SC2Spa.tl.SaveValidation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.SaveValidation</span></code></a>(history, CV, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.SaveValidation.html#SC2Spa.tl.SaveValidation" title="SC2Spa.tl.SaveValidation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.SaveValidation</span></code></a>(history, CV, name)</p></td>
 <td><p>Save the FCNN or LR training history to 'log/<a href="#id2"><span class="problematic" id="id3">training_log_</span></a>' + name + '.pickle',</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.CheckAccuracy.html#SC2Spa.tl.CheckAccuracy" title="SC2Spa.tl.CheckAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.CheckAccuracy</span></code></a>(name[, item_name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.CheckAccuracy.html#SC2Spa.tl.CheckAccuracy" title="SC2Spa.tl.CheckAccuracy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.CheckAccuracy</span></code></a>(name[, item_name])</p></td>
 <td><p>Check the accuracies and mean accuracy of cross-validation</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.CrossValidation.html#SC2Spa.tl.CrossValidation" title="SC2Spa.tl.CrossValidation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.CrossValidation</span></code></a>(X, Y, train_indices, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.CrossValidation.html#SC2Spa.tl.CrossValidation" title="SC2Spa.tl.CrossValidation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.CrossValidation</span></code></a>(X, Y, train_indices, ...)</p></td>
 <td><p>Perform Cross-validation using fully connected neural network</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.WassersteinD.html#SC2Spa.tl.WassersteinD" title="SC2Spa.tl.WassersteinD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.WassersteinD</span></code></a>(adata_ref, adata_query, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.WassersteinD.html#SC2Spa.tl.WassersteinD" title="SC2Spa.tl.WassersteinD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.WassersteinD</span></code></a>(adata_ref, adata_query, ...)</p></td>
 <td><p>Calculate Wassertein distances of genes between two datasets</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.pp_Mapping.html#SC2Spa.tl.pp_Mapping" title="SC2Spa.tl.pp_Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.pp_Mapping</span></code></a>(adata_ref, adata_query, JGs[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.pp_Mapping.html#SC2Spa.tl.pp_Mapping" title="SC2Spa.tl.pp_Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.pp_Mapping</span></code></a>(adata_ref, adata_query, JGs[, ...])</p></td>
 <td><p>Extract gene expression matrices sharing the same genes and the reference coordinates</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.BatchPredict.html#SC2Spa.tl.BatchPredict" title="SC2Spa.tl.BatchPredict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.BatchPredict</span></code></a>(Model, X[, BatchSize])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.BatchPredict.html#SC2Spa.tl.BatchPredict" title="SC2Spa.tl.BatchPredict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.BatchPredict</span></code></a>(Model, X[, BatchSize])</p></td>
 <td><p>Predict batch by batch</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.Self_Mapping.html#SC2Spa.tl.Self_Mapping" title="SC2Spa.tl.Self_Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Self_Mapping</span></code></a>(adata[, sparse, model_path, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.tl.Self_Mapping.html#SC2Spa.tl.Self_Mapping" title="SC2Spa.tl.Self_Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Self_Mapping</span></code></a>(adata[, sparse, model_path, ...])</p></td>
 <td><p>Map ST beads to spatial locations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.tl.Mapping.html#SC2Spa.tl.Mapping" title="SC2Spa.tl.Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Mapping</span></code></a>(adata_ref, adata_query[, sparse, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.tl.Mapping.html#SC2Spa.tl.Mapping" title="SC2Spa.tl.Mapping"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tl.Mapping</span></code></a>(adata_ref, adata_query[, sparse, ...])</p></td>
 <td><p>Map single cells to spatial locations.</p></td>
 </tr>
 </tbody>
@@ -197,25 +197,25 @@
 <span id="plotting"></span><h2>Plotting<a class="headerlink" href="#module-SC2Spa.pl" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.DrawGenes2.html#SC2Spa.pl.DrawGenes2" title="SC2Spa.pl.DrawGenes2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawGenes2</span></code></a>(adata, gene[, coords_name, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pl.DrawGenes2.html#SC2Spa.pl.DrawGenes2" title="SC2Spa.pl.DrawGenes2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawGenes2</span></code></a>(adata, gene[, coords_name, ...])</p></td>
 <td><p>Show the expression of a gene in cells or ST beads</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.DrawCT1.html#SC2Spa.pl.DrawCT1" title="SC2Spa.pl.DrawCT1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT1</span></code></a>(adata, CT[, ax, coords_name, s, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.pl.DrawCT1.html#SC2Spa.pl.DrawCT1" title="SC2Spa.pl.DrawCT1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT1</span></code></a>(adata, CT[, ax, coords_name, s, ...])</p></td>
 <td><p>Show the spatial locations of a type of cells or beads</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.DrawCT2.html#SC2Spa.pl.DrawCT2" title="SC2Spa.pl.DrawCT2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT2</span></code></a>(adata, CT[, coords_name, title, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pl.DrawCT2.html#SC2Spa.pl.DrawCT2" title="SC2Spa.pl.DrawCT2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT2</span></code></a>(adata, CT[, coords_name, title, ...])</p></td>
 <td><p>Customized Function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.DrawCT3.html#SC2Spa.pl.DrawCT3" title="SC2Spa.pl.DrawCT3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT3</span></code></a>(adata, CT_list[, coords_name, s, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.pl.DrawCT3.html#SC2Spa.pl.DrawCT3" title="SC2Spa.pl.DrawCT3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawCT3</span></code></a>(adata, CT_list[, coords_name, s, ...])</p></td>
 <td><p>Display original locations or predicted locations of beads/cells of selected types.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.DrawSVG.html#SC2Spa.pl.DrawSVG" title="SC2Spa.pl.DrawSVG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawSVG</span></code></a>(adata, GeneList, target_field[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pl.DrawSVG.html#SC2Spa.pl.DrawSVG" title="SC2Spa.pl.DrawSVG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.DrawSVG</span></code></a>(adata, GeneList, target_field[, ...])</p></td>
 <td><p>Show the expression of location predictive genes (or spatially variable genes)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.Superimpose.html#SC2Spa.pl.Superimpose" title="SC2Spa.pl.Superimpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.Superimpose</span></code></a>(adata[, coords_name, G1, G2, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.pl.Superimpose.html#SC2Spa.pl.Superimpose" title="SC2Spa.pl.Superimpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.Superimpose</span></code></a>(adata[, coords_name, G1, G2, ...])</p></td>
 <td><p>Show the spatial gene expressions of two genes and their superimposed images</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pl.draw_cb.html#SC2Spa.pl.draw_cb" title="SC2Spa.pl.draw_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.draw_cb</span></code></a>([cmap, figsize, save, size])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pl.draw_cb.html#SC2Spa.pl.draw_cb" title="SC2Spa.pl.draw_cb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pl.draw_cb</span></code></a>([cmap, figsize, save, size])</p></td>
 <td><p>Draw an independent color bar figure</p></td>
 </tr>
 </tbody>
@@ -225,10 +225,10 @@
 <span id="benchmarking"></span><h2>Benchmarking<a class="headerlink" href="#module-SC2Spa.bm" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.bm.BVMI.html#SC2Spa.bm.BVMI" title="SC2Spa.bm.BVMI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bm.BVMI</span></code></a>(adata1, adata2, GL[, coords_name, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.bm.BVMI.html#SC2Spa.bm.BVMI" title="SC2Spa.bm.BVMI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bm.BVMI</span></code></a>(adata1, adata2, GL[, coords_name, ...])</p></td>
 <td><p>Calculate bivariate Moran's I of the genes of two ST data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.bm.Vis_Euclidean.html#SC2Spa.bm.Vis_Euclidean" title="SC2Spa.bm.Vis_Euclidean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bm.Vis_Euclidean</span></code></a>(coord_ref, coord_pred, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.bm.Vis_Euclidean.html#SC2Spa.bm.Vis_Euclidean" title="SC2Spa.bm.Vis_Euclidean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bm.Vis_Euclidean</span></code></a>(coord_ref, coord_pred, ...)</p></td>
 <td><p>Show the euclidean distance of the original and predicted locations of beads.</p></td>
 </tr>
 </tbody>
@@ -238,16 +238,16 @@
 <span id="preprocessing"></span><h2>Preprocessing<a class="headerlink" href="#module-SC2Spa.pp" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pp.MinMaxNorm.html#SC2Spa.pp.MinMaxNorm" title="SC2Spa.pp.MinMaxNorm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.MinMaxNorm</span></code></a>(Y, Y_ref)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pp.MinMaxNorm.html#SC2Spa.pp.MinMaxNorm" title="SC2Spa.pp.MinMaxNorm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.MinMaxNorm</span></code></a>(Y, Y_ref)</p></td>
 <td><p>Min-Max normalize along the second axis</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.pp.ReMMNorm.html#SC2Spa.pp.ReMMNorm" title="SC2Spa.pp.ReMMNorm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.ReMMNorm</span></code></a>(Y_ref, Y_pred)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.pp.ReMMNorm.html#SC2Spa.pp.ReMMNorm" title="SC2Spa.pp.ReMMNorm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.ReMMNorm</span></code></a>(Y_ref, Y_pred)</p></td>
 <td><p>Reverse Min-Max normalize along the second axis</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.pp.PolarTrans.html#SC2Spa.pp.PolarTrans" title="SC2Spa.pp.PolarTrans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.PolarTrans</span></code></a>(Y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.pp.PolarTrans.html#SC2Spa.pp.PolarTrans" title="SC2Spa.pp.PolarTrans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.PolarTrans</span></code></a>(Y)</p></td>
 <td><p>Transform cartesian coordinates to polar coordinates</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.pp.RePolarTrans.html#SC2Spa.pp.RePolarTrans" title="SC2Spa.pp.RePolarTrans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.RePolarTrans</span></code></a>(RTheta)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.pp.RePolarTrans.html#SC2Spa.pp.RePolarTrans" title="SC2Spa.pp.RePolarTrans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pp.RePolarTrans</span></code></a>(RTheta)</p></td>
 <td><p>Transform polar coordinates to cartesian coordinates</p></td>
 </tr>
 </tbody>
@@ -257,13 +257,13 @@
 <span id="spatially-variable-gene-analysis"></span><h2>Spatially Variable Gene Analysis<a class="headerlink" href="#module-SC2Spa.sva" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.sva.PrioritizeLPG.html#SC2Spa.sva.PrioritizeLPG" title="SC2Spa.sva.PrioritizeLPG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.PrioritizeLPG</span></code></a>(adata, Model[, sparse, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.sva.PrioritizeLPG.html#SC2Spa.sva.PrioritizeLPG" title="SC2Spa.sva.PrioritizeLPG"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.PrioritizeLPG</span></code></a>(adata, Model[, sparse, ...])</p></td>
 <td><p>Prioritize genes' contribution to location prediction</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.sva.SelectGenes.html#SC2Spa.sva.SelectGenes" title="SC2Spa.sva.SelectGenes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.SelectGenes</span></code></a>(Weights[, percent])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.sva.SelectGenes.html#SC2Spa.sva.SelectGenes" title="SC2Spa.sva.SelectGenes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.SelectGenes</span></code></a>(Weights[, percent])</p></td>
 <td><p>Trace back the weight matrices to evaluate the importance of genes in location prediction</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.sva.SelectFeatures.html#SC2Spa.sva.SelectFeatures" title="SC2Spa.sva.SelectFeatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.SelectFeatures</span></code></a>(array_in, percent)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.sva.SelectFeatures.html#SC2Spa.sva.SelectFeatures" title="SC2Spa.sva.SelectFeatures"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sva.SelectFeatures</span></code></a>(array_in, percent)</p></td>
 <td><p>Select top <cite>percent</cite> quantile nodes</p></td>
 </tr>
 </tbody>
@@ -273,22 +273,22 @@
 <span id="mutual-exclusivity-analysis"></span><h2>Mutual Exclusivity Analysis<a class="headerlink" href="#module-SC2Spa.me" title="Permalink to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.me.BME_stat.html#SC2Spa.me.BME_stat" title="SC2Spa.me.BME_stat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.BME_stat</span></code></a>(A1, A2[, p_coef])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.me.BME_stat.html#SC2Spa.me.BME_stat" title="SC2Spa.me.BME_stat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.BME_stat</span></code></a>(A1, A2[, p_coef])</p></td>
 <td><p>Calculate Balanced Mutual exclusivity score between Gene 1 and Gene 2</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.me.calc_BME.html#SC2Spa.me.calc_BME" title="SC2Spa.me.calc_BME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_BME</span></code></a>(A[, n_process, n_resamples])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.me.calc_BME.html#SC2Spa.me.calc_BME" title="SC2Spa.me.calc_BME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_BME</span></code></a>(A[, n_process, n_resamples])</p></td>
 <td><p>Calculate Balanced Mutual Exclusivity</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.me.calc_BME_sub.html#SC2Spa.me.calc_BME_sub" title="SC2Spa.me.calc_BME_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_BME_sub</span></code></a>(ij, A, genes, n_resamples)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.me.calc_BME_sub.html#SC2Spa.me.calc_BME_sub" title="SC2Spa.me.calc_BME_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_BME_sub</span></code></a>(ij, A, genes, n_resamples)</p></td>
 <td><p>Calculate Balanced Mutual exclusivity (subprocess)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.me.calc_DEEI.html#SC2Spa.me.calc_DEEI" title="SC2Spa.me.calc_DEEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_DEEI</span></code></a>(A[, cutoff, p_coef, n_process])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.me.calc_DEEI.html#SC2Spa.me.calc_DEEI" title="SC2Spa.me.calc_DEEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.calc_DEEI</span></code></a>(A[, cutoff, p_coef, n_process])</p></td>
 <td><p>Calculate Balanced Mutual Exclusivity and Directed exclusively express index</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="source/api/SC2Spa.me.DEEI_sub.html#SC2Spa.me.DEEI_sub" title="SC2Spa.me.DEEI_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.DEEI_sub</span></code></a>(ij, Count_excl, Prob_excl, A_S, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/SC2Spa.me.DEEI_sub.html#SC2Spa.me.DEEI_sub" title="SC2Spa.me.DEEI_sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.DEEI_sub</span></code></a>(ij, Count_excl, Prob_excl, A_S, ...)</p></td>
 <td><p>Calculate Balanced Mutual exclusivity and Directed exclusively express index (subprocess)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="source/api/SC2Spa.me.Count_Prob_EEI.html#SC2Spa.me.Count_Prob_EEI" title="SC2Spa.me.Count_Prob_EEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.Count_Prob_EEI</span></code></a>(A)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="api/SC2Spa.me.Count_Prob_EEI.html#SC2Spa.me.Count_Prob_EEI" title="SC2Spa.me.Count_Prob_EEI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">me.Count_Prob_EEI</span></code></a>(A)</p></td>
 <td><p>Calculate the counts and probabilities of exclusive events</p></td>
 </tr>
 </tbody>
