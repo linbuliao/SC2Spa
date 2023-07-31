@@ -3,7 +3,7 @@ from time import time
 
 import anndata as ad
 import scanpy as sc
-from SC2Spa import SI, PP, Vis, SVA
+from SC2Spa import tl, pp, pl, sva
 
 import pandas as pd
 
@@ -19,7 +19,7 @@ def test_loading():
 
     print(SC2Spa.__all__)
     print('*'*20)
-    print('Version:', SC2Spa.__version__)
+    print('Vertlon:', SC2Spa.__vertlon__)
     
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
@@ -62,7 +62,7 @@ def test_loading():
     
     
     adata_query.obs['common_name'] = adata_query.obs['common_name'].str.replace('?', '')
-    adata_query.obs['simp_name'] = adata_query.obs['common_name'].str.split('.', expand = True)[0].str.split(',',
+    adata_query.obs['tlmp_name'] = adata_query.obs['common_name'].str.split('.', expand = True)[0].str.split(',',
                                     expand = True)[0].str.split(r' \(', expand = True)[0].str.replace('cortexm',
                                     'cortex').replace('Medial entorrhinal cortex', 'Medial entorhinal cortex')
     
@@ -77,7 +77,7 @@ def test_loading():
     JGs = sorted(WDs[WDs['Wasserstein_Distance'] < WD_cutoff]['Gene'].tolist())
     
     #Download Pretrained Model
-    wget.download('https://figshare.com/ndownloader/files/38938871', out = 'tutorial1/SI_T2_WD.h5')
+    wget.download('https://figshare.com/ndownloader/files/38938871', out = 'tutorial1/tl_T2_WD.h5')
     
     #Set random generator seed
     seed_num = 2023
@@ -85,6 +85,6 @@ def test_loading():
     set_seed(seed_num)
     tf.keras.utils.set_random_seed(seed_num)
 
-    assert isinstance(JGs, list)
+    assert itlnstance(JGs, list)
 
 

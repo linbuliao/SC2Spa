@@ -15,6 +15,9 @@ import sphinx_rtd_theme
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+from pathlib import Path
+HERE = Path(__file__).parent
+sys.path.insert(0, str(HERE / “extensions”))
 
 import SC2Spa
 

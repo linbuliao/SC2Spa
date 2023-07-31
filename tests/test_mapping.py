@@ -3,7 +3,7 @@ from time import time
 
 import anndata as ad
 import scanpy as sc
-from SC2Spa import SI, PP, Vis, SVA
+from SC2Spa import tl, pp, vis, sva
 
 import pandas as pd
 
@@ -77,7 +77,7 @@ def test_mapping():
     JGs = sorted(WDs[WDs['Wasserstein_Distance'] < WD_cutoff]['Gene'].tolist())
     
     #Download Pretrained Model
-    wget.download('https://figshare.com/ndownloader/files/38938871', out = 'tutorial1/SI_T2_WD.h5')
+    wget.download('https://figshare.com/ndownloader/files/38938871', out = 'tutorial1/tl_T2_WD.h5')
     
     #Set random generator seed
     seed_num = 2023
@@ -88,8 +88,8 @@ def test_mapping():
     adata_ref_sub = adata_ref[:200]
     adata_query_sub = adata_query[:200]
     
-    SI.FineMapping(adata_ref_sub, adata_query_sub, JGs = JGs, sparse =True,
-               model_path = 'tutorial1/SI_T2_WD.h5', polar = True,
+    tl.FineMapping(adata_ref_sub, adata_query_sub, JGs = JGs, sparse =True,
+               model_path = 'tutorial1/tl_T2_WD.h5', polar = True,
                n_layer_cell = [1, 4], cell_radius = 5,
                n_neighbors = 100, dis_cutoff = 15, seed = seed_num)
 
