@@ -20,6 +20,12 @@ HERE = Path(__file__).parent.parent
 sys.path.insert(0, str(HERE))
 
 import SC2Spa
+import SC2Spa.bm
+import SC2Spa.pp
+import SC2Spa.pl
+import SC2Spa.tl
+import SC2Spa.me
+import SC2Spa.sva
 
 # -- Project information -----------------------------------------------------
 

@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18f9c73c-4b10-4d53-ba52-dadc319820e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/SC2Spa/bm.py" beforeDir="false" afterPath="$PROJECT_DIR$/SC2Spa/bm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/test.py" beforeDir="false" />
-    </list>
+    <list default="true" id="18f9c73c-4b10-4d53-ba52-dadc319820e2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
