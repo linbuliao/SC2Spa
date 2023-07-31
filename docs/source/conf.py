@@ -12,12 +12,12 @@ import sphinx_rtd_theme
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
 from pathlib import Path
 HERE = Path(__file__).parent
-sys.path.insert(0, str(HERE / “extensions”))
+sys.path.insert(0, str(HERE / "extensions"))
 
 import SC2Spa
 
