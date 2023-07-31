@@ -19,13 +19,13 @@ from pathlib import Path
 HERE = Path(__file__).parent.parent
 sys.path.insert(0, str(HERE))
 
-import SC2Spa
-import SC2Spa.bm
-import SC2Spa.pp
-import SC2Spa.pl
-import SC2Spa.tl
-import SC2Spa.me
-import SC2Spa.sva
+import subprocess
+import sys
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+    
+install(SC2Spa)
 
 # -- Project information -----------------------------------------------------
 

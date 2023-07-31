@@ -3,7 +3,7 @@ from time import time
 
 import anndata as ad
 import scanpy as sc
-from SC2Spa import tl, pp, vis, sva
+from SC2Spa import tl, pp, pl, sva
 
 import pandas as pd
 

@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18f9c73c-4b10-4d53-ba52-dadc319820e2" name="Changes" comment="" />
+    <list default="true" id="18f9c73c-4b10-4d53-ba52-dadc319820e2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/docs/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/docs/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_mapping.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
