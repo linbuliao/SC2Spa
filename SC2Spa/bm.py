@@ -28,7 +28,7 @@ def BVMI(adata1: anndata.AnnData, adata2: anndata.AnnData,
          GL: list, coords_name = 'spatial', n_neighbors=300, max_dis=1700):
 
     '''
-    Calculate bivariate Moran's I of the genes of two ST data
+    Calculate bivariate Moran's I of the genes of two ST data.
 
     The two ST datasets share some or all ST voxels/cells
 

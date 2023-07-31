@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SC2Spa.tl.Reconstruct_scST &mdash; SC2Spa 1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SC2Spa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gallery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials.html">Tutorials</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SC2Spa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SC2Spa.tl.Reconstruct_scST</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/source/api/SC2Spa.tl.Reconstruct_scST.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sc2spa-tl-reconstruct-scst">
+<h1>SC2Spa.tl.Reconstruct_scST<a class="headerlink" href="#sc2spa-tl-reconstruct-scst" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="SC2Spa.tl.Reconstruct_scST">
+<span class="sig-prename descclassname"><span class="pre">SC2Spa.tl.</span></span><span class="sig-name descname"><span class="pre">Reconstruct_scST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adata_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dis_cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layer_cell</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2023</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SC2Spa.tl.Reconstruct_scST" title="Permalink to this definition"></a></dt>
+<dd><p>Reconstruct ST data at single cell resolution</p>
+<p>1 Finely map single cells to spatial locations.
+A model will be trained and saved to <cite>root+name+’.h5’</cite> if model_path is None and save is True.
+The predicted coordinates of single cells will be saved in adata_query.obsm[‘spatial_mapping’]
+The predicted coordinates of beads will be saved in adata_ref.obsm[‘spatial_mapping’]
+Fine mapping information will be saved in adata_ref.obs[‘FM’] and adata_query.obs[‘FM’]. True if a cell/bead
+was mapped, otherwise False.</p>
+<p>2 Reconstruct ST data at single cell resolution
+adata_query.obs[‘Dis2CloestBead’] stores the distance between a cell and the ST bead closest to it</p>
+<dl class="simple">
+<dt>adata_ref</dt><dd><p>Reference anndata object. Gene expression matrix should be the shape of (cell, gene).
+Spatial information should be stored in adata_ref.obsm[‘spatial’] in <cite>np.array</cite> format</p>
+</dd>
+<dt>adata_query</dt><dd><p>Query anndata object. Gene expression matrix should be the shape of (cell, gene).</p>
+</dd>
+<dt>n_neighbors</dt><dd><p>Number of the nearest neighbors of a bead or cell. This parameter is for
+the KNN algorithm</p>
+</dd>
+<dt>dis_cutoff</dt><dd><dl class="simple">
+<dt>Limit for the distance between a single cell and a ST bead. In the process</dt><dd><p>of fine mapping. Only the cells within the cutoff will be retained.</p>
+</dd>
+</dl>
+</dd>
+<dt>n_layer_cell</dt><dd><p>Number of cells in layers for sampling single cells for a ST bead.</p>
+</dd>
+<dt>cell_radius</dt><dd><dl class="simple">
+<dt>Radius of a cell. For example, n_layer_cell=[1, 4] and cell_radius=5 means sampling 1 cell</dt><dd><p>from cells within 5 to a bead and at most 4 cells from cells between 5 and 15 to the bead.
+It is at most 4 cells because a cell can be sampled more than once to deal with the case
+that a bead has fewer cells than the user specified.</p>
+</dd>
+</dl>
+</dd>
+<dt>seed</dt><dd><p>seed for reconstructing the single-cell ST data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Linbu Liao and Won lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

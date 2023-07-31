@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SC2Spa.pl.Superimpose &mdash; SC2Spa 1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            SC2Spa
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">General</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Gallery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorials.html">Tutorials</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SC2Spa</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SC2Spa.pl.Superimpose</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/source/api/SC2Spa.pl.Superimpose.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sc2spa-pl-superimpose">
+<h1>SC2Spa.pl.Superimpose<a class="headerlink" href="#sc2spa-pl-superimpose" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="SC2Spa.pl.Superimpose">
+<span class="sig-prename descclassname"><span class="pre">SC2Spa.pl.</span></span><span class="sig-name descname"><span class="pre">Superimpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnnData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coords_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spatial'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'APOE'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">G2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'NRGN'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Reds'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Blues'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'figures/BME/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#SC2Spa.pl.Superimpose" title="Permalink to this definition"></a></dt>
+<dd><p>Show the spatial gene expressions of two genes and their superimposed images</p>
+<p>The figures will be saved as if <cite>save==True</cite>:
+<cite>save_root + G1 + ‘_1.png’</cite> (Spatial Gene Expression of Gene1)
+<cite>save_root + G2 + ‘_1.png’</cite> (Spatial Gene Expression of Gene2)
+<cite>save_root + G1 + ‘_’ + G2 + ‘.png’</cite> (Draw Gene1 first in the superimposed figure)
+<cite>save_root + G2 + ‘_’ + G1 + ‘.png’</cite> (Draw Gene2 first in the superimposed figure)</p>
+<dl class="simple">
+<dt>adata</dt><dd><p>anndata file.
+Coordinate Information should be stored in <cite>adata.obsm[coords_name]</cite></p>
+</dd>
+<dt>G1</dt><dd><p>name of Gene1</p>
+</dd>
+<dt>G2</dt><dd><p>name of Gene2</p>
+</dd>
+<dt>s</dt><dd><p>size of beads in the figure. The second gene in the superimposed figures will
+be drawn in the size of s/4</p>
+</dd>
+<dt>alpha1</dt><dd><dl class="simple">
+<dt>Transparency score of beads of the figures for only one gene.</dt><dd><p>1 is completely opaque. 0 is completely transparent.</p>
+</dd>
+</dl>
+</dd>
+<dt>alpha2</dt><dd><dl class="simple">
+<dt>Transparency score of beads of the superimposed figures.</dt><dd><p>1 is completely opaque. 0 is completely transparent.</p>
+</dd>
+</dl>
+</dd>
+<dt>C1</dt><dd><p>color (map) for the Gene1</p>
+</dd>
+<dt>C2</dt><dd><p>color (map) for the Gene2</p>
+</dd>
+</dl>
+<p>None</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Linbu Liao and Won lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
