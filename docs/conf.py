@@ -27,6 +27,8 @@ def install(package):
     
 install("SC2Spa")
 
+import SC2Spa
+
 # -- Project information -----------------------------------------------------
 
 project = 'SC2Spa'

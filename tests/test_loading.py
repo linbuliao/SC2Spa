@@ -19,7 +19,7 @@ def test_loading():
 
     print(SC2Spa.__all__)
     print('*'*20)
-    print('Vertlon:', SC2Spa.__vertlon__)
+    print('Vertlon:', SC2Spa.__vertion__)
     
     if not os.path.exists('Dataset'):
         os.makedirs('Dataset')
