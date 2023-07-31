@@ -17,6 +17,7 @@ import sys
 #sys.path.insert(0, os.path.abspath('.'))
 
 import SC2Spa
+import SC2Spa.bm
 
 # -- Project information -----------------------------------------------------
 
