@@ -20,3 +20,9 @@ The analysis for the SC2Spa manuscript can be found [here](https://github.com/li
 
 ## Many more to come!
 We will update more on our [Read the Docs page](https://sc2spa.readthedocs.io/en/latest/)
+
+## News
+
+2023/08/22
+SC2Spa is now on BioRXiv!
+https://www.biorxiv.org/content/10.1101/2023.08.22.554277v1
