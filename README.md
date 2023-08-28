@@ -23,6 +23,6 @@ We will update more on our [Read the Docs page](https://sc2spa.readthedocs.io/en
 
 ## News
 
-__2023/08/22__
+__2023/08/22__  
 SC2Spa is now on BioRXiv!
 https://www.biorxiv.org/content/10.1101/2023.08.22.554277v1
