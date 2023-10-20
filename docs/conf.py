@@ -26,7 +26,7 @@ copyright = '2022, Linbu Liao and Won lab'
 author = 'Linbu Liao, Kyoung Jae Won'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = '1.2.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -35,6 +35,7 @@ release = '1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+        #'ipypublish.sphinx.notebook',
 	'sphinx_rtd_theme',
 	'nbsphinx',
 	'sphinx_gallery.load_style',
@@ -44,6 +45,12 @@ extensions = [
 	'sphinx.ext.autodoc',
 	'sphinx.ext.autosummary'
 ]
+
+#source_suffix = {
+#    '.rst': 'restructuredtext',
+#    '.ipynb': 'jupyter_notebook',
+#    '.Rmd': 'jupyter_notebook'
+#}
 
 
 autosummary_generate = True
