@@ -15,7 +15,7 @@ pip install SC2Spa
 ```
 
 ## Analysis for the SC2Spa manuscript
-The analysis for the SC2Spa manuscript can be found [here](https://github.com/linbuliao/SC2Spa_Notebooks).
+The analysis for the SC2Spa manuscript can be found in [this repository](https://github.com/linbuliao/SC2Spa_Notebooks).
 The analysis and related data were also uploaded to [Figshare](https://figshare.com/articles/dataset/Datasets_for_high_resolution_spatial_mapping_of_mouse_hippocampus_Slide-seqV2_for_SC2Spa/21829905/8) and [Zenodo](https://zenodo.org/records/8252715)
 
 ## Many more to come!
