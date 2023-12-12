@@ -2,7 +2,7 @@
 
 Installation
 ============
-SC2Spa requires Python version >= 3.8 to run.
+SC2Spa requires Python version >= 3.9 to run.
 
 PyPI
 ----
