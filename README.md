@@ -9,8 +9,10 @@ SC2Spa: a deep learning based approach to map transcriptome to spatial origins a
 </p>
 
 ## Install
-Install SC2Spa via PyPI by running:
+Install SC2Spa:
 ```
+conda create -n SC2Spa python=3.9
+conda activate SC2Spa
 pip install SC2Spa
 ```
 
