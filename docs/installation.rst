@@ -8,4 +8,6 @@ PyPI
 ----
 Install SC2Spa by running::
 
+    conda create -n SC2Spa python=3.9
+    conda activate SC2Spa
     pip install SC2Spa
