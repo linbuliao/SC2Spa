@@ -363,8 +363,8 @@ def pp_Mapping(adata_ref:anndata.AnnData, adata_query:anndata.AnnData,
     # Select genes
     if(JGs == None):
         if (WD_cutoff == None):
-            adata_ref.var_names = adata_ref.var_names.str.upper()
-            adata_query.var_names = adata_query.var_names.str.upper()
+            #adata_ref.var_names = adata_ref.var_names.str.upper()
+            #adata_query.var_names = adata_query.var_names.str.upper()
 
             adata_ref.var_names_make_unique()
             adata_query.var_names_make_unique()
