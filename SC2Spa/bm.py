@@ -13,8 +13,8 @@ from scipy.stats import bootstrap
 
 from IPython.display import clear_output
 
-#from matplotlib import rc
-#rc('font', **{'family':'sans-serif','sans-serif':['Helvetica']})
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans']  # DejaVu Sans is a default font that comes with matplotlib
 
 import seaborn as sns
 cmap = sns.cubehelix_palette(n_colors = 32,start = 2, rot=1.5, as_cmap = True)
@@ -386,11 +386,10 @@ def eval_cv(preds: list, YNorm: np.array, test_indices: list, CPs: np.array,
 
         return statistics
 
-    
 def Visualize_SSV2(adata:anndata.AnnData, coord:np.array, out_prefix = 'Benchmarking/MH1/',
-		           ctname = 'MCT', anchor = (1, 0.9), s = 3,
-	               xlim = [650, 5750], ylim = [650, 5750], lim = False,
-	               title = 'SC2Spa', legend = False):
+                    ctname = 'MCT', anchor = (1, 0.9), s = 3,
+                    xlim = [650, 5750], ylim = [650, 5750], lim = False,
+                    title = 'SC2Spa', cmap = 'tab20', n_ct = 20, legend = False):
     '''
     Display original locations or predicted locations of beads.
     Beads are colored according to cell type.
@@ -419,13 +418,17 @@ def Visualize_SSV2(adata:anndata.AnnData, coord:np.array, out_prefix = 'Benchmar
 
     if not os.path.exists(out_prefix):
         os.makedirs(out_prefix)
-    
+
+    # Use tab20 colormap for distinct colors
+    tab20 = plt.get_cmap(cmap).colors
+
+    # Select the top cell types
     CTs = adata.obs[ctname].value_counts()
-    if(ctname=='MCT'):
+    if ctname == 'MCT':
         is_doub = CTs.index.str.contains('_')
-        SelectedCTs = CTs[~is_doub].index.tolist()[:8]
+        SelectedCTs = CTs[~is_doub].index.tolist()[:n_ct]
     else:
-        SelectedCTs = CTs.index.tolist()[:8]
+        SelectedCTs = CTs.index.tolist()[:n_ct]
 
     t = adata
     Select1 = t.obs[ctname].apply(lambda x: x in SelectedCTs).tolist()
@@ -433,38 +436,30 @@ def Visualize_SSV2(adata:anndata.AnnData, coord:np.array, out_prefix = 'Benchmar
     t = t[Select]
     coord = coord[Select]
 
-    color_dic = {}
-    for i, ct in enumerate(t.obs[ctname].unique()):
-        color_dic[ct] = i
+    # Create color dictionary
+    unique_cts = t.obs[ctname].unique()
+    color_dic = {ct: tab20[i % len(tab20)] for i, ct in enumerate(unique_cts)}
 
-    color = list(map(lambda x: color_dic[x], t.obs[ctname]))
+    # Assign colors
+    colors = [color_dic[x] for x in t.obs[ctname]]
 
-    plt.figure(figsize =(7,6))
-    scatter = plt.scatter(coord[:, 0],\
-                coord[:, 1],\
-                s = s,\
-                c = color,\
-                cmap = plt.get_cmap('Paired'))
+    # Plot the scatter plot with manual colors
+    plt.figure(figsize=(7, 6))
+    scatter = plt.scatter(coord[:, 0], coord[:, 1], s=s, c=colors)
     plt.grid(False)
-    plt.tick_params(axis='both',
-                    which='both',
-                    bottom=False,
-                    labelbottom=False,
-                    left=False,
-                    labelleft=False)
-    
-    if(lim):
+    plt.tick_params(axis='both', which='both', bottom=False, labelbottom=False, left=False, labelleft=False)
+
+    if lim:
         plt.xlim(xlim)
         plt.ylim(ylim)
 
-    ##Extract handles
-    handles = scatter.legend_elements()[0]
+    # Manually create legend handles and labels
+    handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=color_dic[ct], markersize=10) for ct in unique_cts]
+    labels = list(unique_cts)
 
-    if(legend):
-        plt.title(title)
-        plt.legend(handles=scatter.legend_elements()[0],
-                   labels = list(t.obs[ctname].unique()),
-                   bbox_to_anchor=anchor)
+    if legend:
+        plt.title('Title')  # Replace 'Title' with your title variable
+        plt.legend(handles=handles, labels=labels, bbox_to_anchor=anchor, ncol = 2)
         plt.savefig(out_prefix + title + '.png', bbox_inches='tight')
     else:
         plt.savefig(out_prefix + title + '_no_legend.png', bbox_inches='tight')
@@ -472,14 +467,14 @@ def Visualize_SSV2(adata:anndata.AnnData, coord:np.array, out_prefix = 'Benchmar
     plt.show()
 
     ###################
-    ####Draw legend####
+    #### Draw legend ####
     ###################
-    # Create legend
-    plt.legend(handles=scatter.legend_elements()[0],
-               labels=list(t.obs[ctname].unique()))
+    # Create a separate figure for the legend
+    fig, ax = plt.subplots()
+    ax.legend(handles=handles, labels=labels, ncol = 2)
     # Get current axes object and turn off axis
-    plt.gca().set_axis_off()
-    plt.savefig(out_prefix + 'legend.png', bbox_inches='tight')
+    ax.set_axis_off()
+    plt.savefig(out_prefix + 'legend.png', bbox_inches='tight')    
 
 
 def Vis_Euclidean(coord_ref: np.array, coord_pred: np.array, max_value: float,

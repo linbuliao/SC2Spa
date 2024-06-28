@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+SC2Spa/__init__.py
+SC2Spa/__metadata__.py
+SC2Spa/bm.py
+SC2Spa/me.py
+SC2Spa/pl.py
+SC2Spa/pp.py
+SC2Spa/sva.py
+SC2Spa/tl.py
+SC2Spa.egg-info/PKG-INFO
+SC2Spa.egg-info/SOURCES.txt
+SC2Spa.egg-info/dependency_links.txt
+SC2Spa.egg-info/top_level.txt
+tests/test_loading.py
+tests/test_mapping.py

@@ -11,7 +11,7 @@ from scipy.stats import wasserstein_distance
 import tensorflow as tf
 from keras.models import Model, load_model
 from keras.regularizers import l1_l2
-from keras.layers import Dense, Input, BatchNormalization, Dropout
+from keras.layers import Dense, Input, LayerNormalization, BatchNormalization, ReLU, Dropout
 from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 
 from IPython.display import clear_output
@@ -24,11 +24,11 @@ def rmse(y_true, y_pred):
 def calc_rmse(y_true, y_pred):
     return np.sqrt(np.square(y_true - y_pred).mean())
 
-loss = rmse
-loss_name = 'rmse'
+#loss = rmse
+#loss_name = 'rmse'
 
-def FCNN(input_shape: tuple, out_shape: int,l1_reg = 1e-7, l2_reg = 0,
-	     dropout = 0, nodes = [4096, 1024, 256, 64, 16, 4], seed = None):
+def FCNN(input_shape: tuple, out_shape: int, l1_reg = 1e-7, l2_reg = 0,
+	     dropout = 0, nodes = [4096, 1024, 256, 64, 16, 4], NormMethod = 'BN', seed = None):
     '''
     Construct a fully connected neural network
 
@@ -56,8 +56,12 @@ def FCNN(input_shape: tuple, out_shape: int,l1_reg = 1e-7, l2_reg = 0,
     for node in nodes:
         X = Dropout(rate = dropout, seed = seed)(X)
         X = Dense(node, kernel_initializer = tf.keras.initializers.GlorotNormal(seed = seed),
-                  activation = 'relu', kernel_regularizer = l1_l2(l1_reg, l2_reg))(X)
-        X = BatchNormalization(axis = 1)(X)
+                  activation = None, kernel_regularizer = l1_l2(l1_reg, l2_reg))(X)
+        if(NormMethod == 'BN'):
+            X = BatchNormalization(axis = -1)(X)
+        elif(NormMethod == 'LN'):
+            X = LayerNormalization(axis = -1)(X)
+        X = ReLU()(X)
     
     X = Dense(out_shape, kernel_initializer = tf.keras.initializers.GlorotNormal(seed = seed),
               activation = 'sigmoid')(X)
@@ -110,8 +114,8 @@ def batch_generator(X:np.array, y: np.array, sample_index:list, batch_size: int,
 
 def CrossValidation(X: np.array, Y: np.array, train_indices, test_indices,
                     l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, lrr_patience = 20,
-                    ES_patience = 50, min_lr = 1e-9,
-                    epoch = 20, batch_size = 4096,
+                    ES_patience = 50, min_lr = 1e-9, NormMethod = 'BN',
+                    epoch = 20, batch_size = 4096, loss = rmse, loss_name = 'rmse',
                     nodes = [4096, 1024, 256, 64, 16, 4], seed = None):
     '''
     Perform Cross-validation using fully connected neural network
@@ -173,7 +177,7 @@ def CrossValidation(X: np.array, Y: np.array, train_indices, test_indices,
         X_train = X[cv_train, :]
 
         model = FCNN((X.shape[1],), length, nodes = nodes, dropout = dropout,
-                     l1_reg =  l1_reg, l2_reg = l2_reg, seed = seed)
+                     l1_reg =  l1_reg, l2_reg = l2_reg, NormMethod = NormMethod, seed = seed)
         model.compile(optimizer = 'adam', loss = loss, metrics = [loss])
 
         if(seed == None):
@@ -199,7 +203,8 @@ def CrossValidation(X: np.array, Y: np.array, train_indices, test_indices,
 def Train(X, Y, root='Model_SI/', name = 'SI', 
 	      l1_reg = 1e-5, l2_reg = 0, dropout = 0.05,
           epoch = 500, batch_size = 4096,
-          nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20,
+          nodes = [4096, 1024, 256, 64, 16, 4], loss = 'mse', loss_name = 'mse',
+          NormMethod = 'BN', lrr_patience = 20,
           ES_patience = 50, min_lr = 1e-5, save = True, seed = None):
     '''
     Train a fully connected neural network.
@@ -245,7 +250,7 @@ def Train(X, Y, root='Model_SI/', name = 'SI',
                                                 min_lr=min_lr)
 
     model = FCNN((X.shape[1],), length, l1_reg = l1_reg, l2_reg = l2_reg,
-                  dropout = dropout, nodes = nodes, seed = seed)
+                  dropout = dropout, nodes = nodes, NormMethod = NormMethod, seed = seed)
     model.compile(optimizer = 'adam', loss = loss, metrics = [loss])
 
     if (seed == None):
@@ -463,141 +468,6 @@ def ExtractXY(adata, sparse = True, polar = True):
 
     return X, Y, Y_ref, RTheta_ref
 
-def Self_Mapping(adata: anndata.AnnData, sparse = True, model_path = None,
-            root = 'Model_SI/', name = 'SI_Overall', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,
-            batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20, ES_patience = 50,
-            min_lr = 1e-5, save = False, polar = True, seed = None):
-
-    '''
-    Map ST beads to spatial locations. A fully connected neural network trained on all
-    all ST beads will be applied to the same set of beads. A model will be trained and
-    saved to `root+name+'.h5'` if model_path is None and save is True.
-    The predicted coordinates will be saved in adata.obsm['spatial_self_mapping']
-
-    Parameters
-    ----------
-    adata
-        Reference anndata object. Gene expression matrix should be the shape of (cell, gene).
-        Spatial information should be stored in adata_ref.obsm['spatial'] in `np.array` format
-    model_path
-        The path of a trained model. If not None, parameters for training will be ignored.
-    root
-        the root path to save the model
-    name
-        the name used to save the model
-    l1_reg
-        l1 regularization factor
-    l2_reg
-        l2 regularization factor
-    nodes
-        a list that contains the numbers of the nodes of hidden layers
-    lrr_patience
-        The patience for learning rate reduction
-    min_lr
-        minimum learning rate
-    ES_patience
-        The patience for early stopping
-
-    Returns
-    -------
-    model
-        a trained fully connected neural network
-
-    '''
-
-    #Extract values
-    X, Y, Y_ref, RTheta_ref = ExtractXY(adata=adata, sparse = sparse, polar=polar)
-
-    if(model_path != None):
-        model = load_model(model_path, compile=False)
-    else:
-        model = Train(X=X, Y=Y, root = root, name = name, l1_reg = l1_reg,
-                      l2_reg = l2_reg, dropout = dropout, epoch = epoch,
-                      batch_size = batch_size, nodes = nodes, lrr_patience = lrr_patience,
-                      ES_patience = ES_patience, min_lr = min_lr, save = save, seed = seed)
-    Ref_pred_Y = BatchPredict(model, X)
-    if(polar):
-        Ref_pred_Y = pp.RePolarTrans(pp.ReMMNorm(RTheta_ref, Ref_pred_Y))
-    else:
-        Ref_pred_Y = pp.ReMMNorm(Y_ref, Ref_pred_Y)
-
-    #Write prediction into adata
-    adata.obsm['spatial_mapping'] = Ref_pred_Y
-
-    return model
-
-def Mapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cutoff = None,
-            root = 'Model_SI/', name = 'SI', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,
-            batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20, ES_patience = 50,
-            min_lr = 1e-5, save = False, polar = True, seed = None):
-
-    '''
-    Map single cells to spatial locations.
-    A model will be trained and saved to `root+name+'.h5'` if model_path is None and save is True.
-    The predicted coordinates will be saved in adata_query.obsm['spatial_mapping']
-
-    Parameters
-    ----------
-    adata_ref
-        Reference anndata object. Gene expression matrix should be the shape of (cell, gene).
-        Spatial information should be stored in adata_ref.obsm['spatial'] in `np.array` format
-    adata_query
-        Query anndata object. Gene expression matrix should be the shape of (cell, gene).
-    sparse
-        if gene expression is saved in sparse format
-    model_path
-        The path of a trained model. If not None, parameters for training will be ignored.
-    WD_cutoff
-        genes with Wasserstein distance lower than the cutoff will be used for mapping
-    root
-        the root path to save the model
-    name
-        the name used to save the model
-    l1_reg
-        l1 regularization factor
-    l2_reg
-        l2 regularization factor
-    nodes
-        a list that contains the numbers of the nodes of hidden layers
-    lrr_patience
-        The patience for learning rate reduction
-    min_lr
-        minimum learning rate
-    ES_patience
-        The patience for early stopping
-
-    Returns
-    -------
-    None
-
-    '''
-
-    #Extract values
-    X_ref, X_query, Y_ref = pp_Mapping(adata_ref, adata_query,
-                                       sparse = sparse, WD_cutoff = WD_cutoff)
-
-    if(polar):
-        RTheta_ref = pp.PolarTrans(Y_ref)
-        Y = pp.MinMaxNorm(RTheta_ref, RTheta_ref)
-    else:
-        Y = pp.MinMaxNorm(Y_ref, Y_ref)
-
-    if(model_path != None):
-        model = load_model(model_path, compile=False)
-    else:
-        model = Train(X=X_ref, Y=Y, root = root, name = name, l1_reg = l1_reg,
-                      l2_reg = l2_reg, dropout = dropout, epoch = epoch,
-                      batch_size = batch_size, nodes = nodes, lrr_patience = lrr_patience,
-                      ES_patience = ES_patience, min_lr = min_lr, save = save, seed = seed)
-    Query_pred_Y = BatchPredict(model, X_query)
-    if(polar):
-        Query_pred_Y = pp.RePolarTrans(pp.ReMMNorm(RTheta_ref, Query_pred_Y))
-    else:
-        Query_pred_Y = pp.ReMMNorm(Y_ref, Query_pred_Y)
-
-    #Write prediction into adata
-    adata_query.obsm['spatial_mapping'] = Query_pred_Y
-
 
 def Reconstruct_scST(adata_ref, adata_query, n_neighbors=1000,
                      dis_cutoff=15, n_layer_cell= [1, 4], cell_radius=5,
@@ -735,8 +605,8 @@ def Reconstruct_scST(adata_ref, adata_query, n_neighbors=1000,
 def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cutoff = None, JGs = None,
                 root = 'Model_SI/', name = 'SI', l1_reg = 1e-5, l2_reg = 0, dropout = 0.05, epoch = 500,
                 batch_size = 4096, nodes = [4096, 1024, 256, 64, 16, 4], lrr_patience = 20, ES_patience = 50,
-                min_lr = 1e-5, save = True, polar = True, FM = True, n_layer_cell = [1, 4],
-                cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = 2023):
+                min_lr = 1e-5, save = True, loss = rmse, loss_name = 'rmse', NormMethod = 'BN', polar = True, FM = True,
+                n_layer_cell = [1, 4], cell_radius = 5, n_neighbors = 1000, dis_cutoff = 15, seed = 2023):
 
     '''
     Finely map single cells to spatial locations and Reconstruct ST data at single cell resolution
@@ -780,6 +650,11 @@ def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cut
         l2 regularization factor
     nodes
         a list that contains the numbers of the nodes of hidden layers
+    NormMethod
+        The method used for the normalization in the Fully-connected Neural Network.
+        'BN' for BatchNormalization
+        'LN' for LayerNormalization
+        None for no normalization
     lrr_patience
         The patience for learning rate reduction
     min_lr
@@ -819,7 +694,8 @@ def FineMapping(adata_ref, adata_query, sparse = True, model_path = None, WD_cut
         model = load_model(model_path, compile=False)
     else:
         model = Train(X=X_ref, Y=Y, root = root, name = name, l1_reg = l1_reg, l2_reg = l2_reg,
-                      dropout = dropout, epoch = epoch, batch_size = batch_size, nodes = nodes,
+                      dropout = dropout, epoch = epoch, loss = loss, loss_name = loss_name,
+                      batch_size = batch_size, nodes = nodes, NormMethod = NormMethod,
                       lrr_patience = lrr_patience, ES_patience = ES_patience, min_lr = min_lr,
                       save = save, seed = seed)
     Query_pred_Y = BatchPredict(model, X_query)
@@ -1202,7 +1078,6 @@ def Train_transfer(adata, root, model_root, sparse = True, polar = True, CT = 'A
 
     '''
     Finetune location prediction model (FCNN) on a specific cell type
-
     A model will be trained and saved to `root + 'SI_' + CT + '.h5'`
     The predicted coordinates of single cells will be saved in adata_query.obsm['spatial_mapping']
     The predicted coordinates of beads will be saved in adata_ref.obs['spatial_mapping']
