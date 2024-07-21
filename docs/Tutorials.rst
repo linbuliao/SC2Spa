@@ -7,7 +7,7 @@ Jupyter Notebooks
 .. nbgallery::
  
     Tutorial/Tutorial_SI_1
-	Tutorial/Tutorial_SI_2
+    Tutorial/Tutorial_SI_2
 
 
 .. raw:: html
