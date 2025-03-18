@@ -20,6 +20,13 @@ pip install SC2Spa
 The analysis for the SC2Spa manuscript can be found in [this repository](https://github.com/linbuliao/SC2Spa_Notebooks).
 The analysis and related data were also uploaded to [Figshare](https://figshare.com/articles/dataset/Datasets_for_high_resolution_spatial_mapping_of_mouse_hippocampus_Slide-seqV2_for_SC2Spa/21829905/8) and [Zenodo](https://zenodo.org/records/8252715).
 
+## Figshare page
+https://figshare.com/articles/dataset/Datasets_for_high_resolution_spatial_mapping_of_mouse_hippocampus_Slide-seqV2_for_SC2Spa/21829905
+
+## Benchmarking and validation code  
+The benchmarking code, including scripts for cross-validation and cross-dataset validation, is available for download as `CV_code.zip` from:
+https://figshare.com/ndownloader/files/53089715
+
 ## Many more to come!
 We will update more on our [Read the Docs page](https://sc2spa.readthedocs.io/en/latest/)
 
