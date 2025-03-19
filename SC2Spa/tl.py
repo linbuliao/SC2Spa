@@ -16,11 +16,14 @@ from keras.callbacks import ReduceLROnPlateau, EarlyStopping
 
 from IPython.display import clear_output
 
-import keras.backend as K
+from tensorflow.keras import backend as K
 from . import pp
 
 def rmse(y_true, y_pred):
+    y_true = K.cast(y_true, dtype='float32')  # float32로 변환
+    y_pred = K.cast(y_pred, dtype='float32')  # float32로 변환
     return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1))
+
 def calc_rmse(y_true, y_pred):
     return np.sqrt(np.square(y_true - y_pred).mean())
 
@@ -154,7 +157,8 @@ def CrossValidation(X: np.array, Y: np.array, train_indices, test_indices,
 
     length = Y.shape[1]
 
-    earlystopper = EarlyStopping(patience=ES_patience, verbose=1)
+    earlystopper = EarlyStopping(monitor='rmse', patience=ES_patience, mode='min',verbose=1    )
+
 
     # Set a learning rate annealer
     learning_rate_reduction = ReduceLROnPlateau(monitor='val_' + loss_name, 
@@ -184,11 +188,12 @@ def CrossValidation(X: np.array, Y: np.array, train_indices, test_indices,
             shuffle = True
         else:
             shuffle = False
-        history = model.fit_generator(generator = batch_generator(X, Y, cv_train,
-                                                                batch_size, shuffle),
-                                    epochs = epoch, steps_per_epoch = len(cv_train) / batch_size,
-                                    validation_data = (X_test, Y[cv_test, :]),
-                                    callbacks = [learning_rate_reduction, earlystopper])
+        history = model.fit(
+        batch_generator(X, Y, np.arange(X.shape[0]), batch_size, shuffle),
+        epochs=epoch,
+        steps_per_epoch=X.shape[0] // batch_size,
+        callbacks=[learning_rate_reduction, earlystopper]
+        )
         
         train_pred = model.predict(X_train)
         test_pred = model.predict(X_test)
@@ -240,7 +245,7 @@ def Train(X, Y, root='Model_SI/', name = 'SI',
 
     length = Y.shape[1]
 
-    earlystopper = EarlyStopping(monitor=loss_name, patience=ES_patience, verbose=1)
+    earlystopper = EarlyStopping(monitor=loss_name, patience=ES_patience, verbose=1,mode=      'min')
 
     # Set a learning rate annealer
     learning_rate_reduction = ReduceLROnPlateau(monitor=loss_name, 
@@ -257,18 +262,19 @@ def Train(X, Y, root='Model_SI/', name = 'SI',
         shuffle = True
     else:
         shuffle = False
-    model.fit_generator(generator = batch_generator(X,\
-                                                  Y,\
-                                                  np.arange(X.shape[0]),\
-                                                  batch_size, shuffle),\
-                      epochs = epoch,\
-                      steps_per_epoch = X.shape[0] / batch_size,\
-                      callbacks = [learning_rate_reduction, earlystopper])
+        
+    model.fit(
+    batch_generator(X, Y, np.arange(X.shape[0]), batch_size, shuffle),
+    epochs=epoch,
+    steps_per_epoch=X.shape[0] // batch_size,
+    callbacks=[learning_rate_reduction, earlystopper]
+    )
 
     if(save):
         if not os.path.exists(root):
             os.makedirs(root)
         model.save(root + name + '.h5')
+    
     
     return model
 
@@ -1021,7 +1027,7 @@ def CV_LR(X:np.array, Y:np.array, train_indices:list, test_indices:list,
     '''
     length = Y.shape[1]
 
-    earlystopper = EarlyStopping(patience=50, verbose=1)
+    earlystopper = EarlyStopping(patience=50, verbose=1, mode='min')
 
     # Set a learning rate annealer
     learning_rate_reduction = ReduceLROnPlateau(monitor='val_rmse', 
@@ -1048,14 +1054,12 @@ def CV_LR(X:np.array, Y:np.array, train_indices:list, test_indices:list,
         model = LR((X.shape[1],), length, l1_reg = l1_reg, l2_reg = l2_reg, dropout = dropout)
         model.compile(optimizer = 'adam', loss = rmse, metrics = [rmse])
 
-        history = model.fit_generator(generator = batch_generator(X,\
-                                                        Y,\
-                                                        cv_train,\
-                                                        batch_size, True),\
-                            epochs = epoch,\
-                            steps_per_epoch = len(cv_train) / batch_size,\
-                            validation_data = (X_test, Y[cv_test, :]),\
-                            callbacks = [learning_rate_reduction, earlystopper])
+        history = model.fit(
+        batch_generator(X, Y, np.arange(X.shape[0]), batch_size, shuffle),
+        epochs=epoch,
+        steps_per_epoch=X.shape[0] // batch_size,
+        callbacks=[learning_rate_reduction, earlystopper]
+        )
 
         train_pred = model.predict(X_train)
         test_pred = model.predict(X_test)
@@ -1119,7 +1123,7 @@ def Train_transfer(adata, root, model_root, sparse = True, polar = True, CT = 'A
     # Extract values
     X, Y, Y_ref, RTheta_ref = ExtractXY(adata=adata, sparse=sparse, polar=polar)
 
-    earlystopper = EarlyStopping(monitor=loss_name, patience=ES_patience, verbose=1)
+    earlystopper = EarlyStopping(monitor=loss_name, patience=ES_patience, verbose=1,mode=      'min')
 
     # Set a learning rate annealer
     learning_rate_reduction = ReduceLROnPlateau(monitor=loss_name, 
@@ -1133,13 +1137,12 @@ def Train_transfer(adata, root, model_root, sparse = True, polar = True, CT = 'A
         for layer in model.layers[:-NLFT]:
             layer.trainable = False
     model.compile(optimizer = 'adam', loss = loss, metrics = [loss])
-    model.fit_generator(generator = batch_generator(X,\
-                                                    Y,\
-                                                    np.arange(X.shape[0]),\
-                                                    batch_size, True),\
-                        epochs = epoch,\
-                        steps_per_epoch = X.shape[0] / batch_size,\
-                        callbacks = [learning_rate_reduction, earlystopper])
+    model.fit(
+    batch_generator(X, Y, np.arange(X.shape[0]), batch_size, shuffle),
+    epochs=epoch,
+    steps_per_epoch=X.shape[0] // batch_size,
+    callbacks=[learning_rate_reduction, earlystopper]
+    )
     model.save(root + 'SI_' + CT + '.h5')
 
     return model
@@ -1221,4 +1224,3 @@ def CheckAccuracy(name:str, item_name = 'rmse'):
         print('Validation', item_name)
         print(accuracy)
         print(np.mean(accuracy))
-
